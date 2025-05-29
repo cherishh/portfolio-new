@@ -25,9 +25,11 @@ import GitHubSnake from '@/components/home/GitHubSnake'
 import { CustomIcon } from '@/components/shared/CustomIcon'
 import IconCloud from '@/components/ui/icon-cloud'
 import { TweetGrid } from '@/components/home/TweetGrid'
+import { ChevronRightIcon } from 'lucide-react'
+import Link from 'next/link'
 
 export default async function Home() {
-  // let blogList = (await getAllBlogs()).slice(0, 4)
+  let blogList = (await getAllBlogs()).slice(0, 4)
 
   return (
     <>
@@ -86,7 +88,40 @@ export default async function Home() {
             ))}
           </ul>
         </div>
-        <div className="mx-auto my-4 flex max-w-xl flex-col gap-6 border-t border-muted py-8 lg:max-w-none">
+        <div className="mx-auto my-8 flex max-w-xl flex-col gap-6 border-t border-muted py-8 lg:max-w-none">
+          <h2 className="text-3xl font-semibold tracking-tight opacity-80 md:text-5xl">
+            {blogHeadLine}
+          </h2>
+          <p className="mb-8 max-w-2xl text-base text-muted-foreground">
+            {blogIntro}
+          </p>
+        </div>
+        <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 pb-4 lg:max-w-none lg:grid-cols-2">
+          {/* left column */}
+          {/* blog */}
+          <div className="flex flex-col gap-16">
+            {blogList.map((blog: BlogType) => (
+              <BlogCard key={blog.slug} blog={blog} titleAs="h3" />
+            ))}
+            <Link
+              href="/blogs"
+              className="flex flex-row items-center text-sm font-semibold capitalize text-primary hover:underline"
+            >
+              Read more blogs
+              <ChevronRightIcon className="ml-1 h-4 w-4 stroke-current" />
+            </Link>
+          </div>
+
+          {/* right column */}
+          <div className="space-y-10 lg:pl-16 xl:pl-24">
+            <Career />
+            <Education />
+
+            {/* <Newsletter /> */}
+            <Feed />
+          </div>
+        </div>
+        {/* <div className="mx-auto my-4 flex max-w-xl flex-col gap-6 border-t border-muted py-8 lg:max-w-none">
           <h2 className="text-3xl font-semibold tracking-tight opacity-80 md:text-5xl">
             {activityHeadLine}
           </h2>
@@ -94,7 +129,7 @@ export default async function Home() {
             {activityIntro}
           </p>
           <TweetGrid />
-        </div>
+        </div> */}
       </Container>
     </>
   )

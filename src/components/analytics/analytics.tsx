@@ -1,10 +1,10 @@
-import GoogleAnalytics from "./google-analytics";
-import OpenPanelAnalytics from "./open-panel-analytics";
-import { PlausibleAnalytics } from "./plausible-analytics";
+import GoogleAnalytics from './google-analytics'
+import OpenPanelAnalytics from './open-panel-analytics'
+import { PlausibleAnalytics } from './plausible-analytics'
 
 export function Analytics() {
-  if (process.env.NODE_ENV !== "production") {
-    return null;
+  if (process.env.NODE_ENV !== 'production') {
+    return null
   }
 
   return (
@@ -16,7 +16,7 @@ export function Analytics() {
       <GoogleAnalytics />
 
       {/* plausible analytics */}
-      <PlausibleAnalytics />
+      {/* <PlausibleAnalytics /> */}
     </>
-  );
+  )
 }

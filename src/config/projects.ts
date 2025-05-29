@@ -1,7 +1,7 @@
 // projects
 export const projectHeadLine = "What I've done and what I'm doing."
 export const projectIntro =
-  "I've worked on a variety of projects, from simple websites to complex web applications. And many of them are open-source. Here are a few of my favorites."
+  "I've worked on a variety of AI related pet projects. Here are a few of my favorites."
 
 export type ProjectItemType = {
   name: string
@@ -102,56 +102,5 @@ export const githubProjects: Array<ProjectItemType> = [
     },
     gitStars: 229,
     gitForks: 30,
-  },
-  {
-    name: 'Chrome Extension Plasmo Template',
-    description:
-      'A chrome extension template using plasmo, tailwind css, shadcn/ui',
-    link: {
-      href: 'github.com/iAmCorey/chrome-extension-plasmo-template',
-      label: 'Chrome Extension Plasmo Template',
-    },
-    gitStars: 54,
-    gitForks: 10,
-  },
-  {
-    name: 'Awesome Indie Hacker Tools',
-    description:
-      '独立开发/出海开发相关技术栈及工具收录 / Find the best tools for indie hackers here',
-    link: {
-      href: 'github.com/iAmCorey/awesome-indie-hacker-tools',
-      label: 'Awesome Indie Hacker Tools',
-    },
-    gitStars: 815,
-    gitForks: 69,
-  },
-  {
-    name: 'Awesome AI Directory',
-    description: 'AI资源工具导航站收录 / Find all the best AI directories',
-    link: {
-      href: 'github.com/iAmCorey/awesome-ai-directory',
-      label: 'Awesome AI Directory',
-    },
-    gitStars: 40,
-    gitForks: 7,
-  },
-  {
-    name: 'Producthunt Daily Bot',
-    description: 'A bot getting product hunt daily top products',
-    link: {
-      href: 'github.com/iAmCorey/producthunt-daily-bot',
-      label: 'Producthunt Daily Bot',
-    },
-    gitStars: 3,
-    gitForks: 3,
-  },
-  {
-    name: 'Cantonese Echoes',
-    description: 'Cantonese Echoes / 粵語殘片',
-    link: {
-      href: 'github.com/iAmCorey/Cantonese-Echoes',
-      label: 'Cantonese Echoes',
-    },
-    gitStars: 1,
   },
 ]

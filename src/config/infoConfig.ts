@@ -18,9 +18,9 @@ export const githubUsername = 'Cherishh'
 export const aboutMeHeadline = 'This guy'
 export const aboutParagraphs = [
   // 'I used to live by “hustle nonstop.” Studied medicine, coded, worked in finance, and chased shortcuts in life. Now I realize: slow is fast. What matters is meaningful work and meaningful relationships.',
-  'I used to live by “hustle nonstop.” Studied medicine, got into tech, and chased shortcuts in life. Now I realize: slow is fast. What matters is meaningful work and meaningful relationships.',
-  'Curious and sharp, with a rebellious spark 😈. I also love to jog, read, and deep chat over a glass of 🍻',
-  "Deeply believe in AI will reshape the world. And I'm gonna be a part of it.",
+  "I'm a software engineer, full-stack web developer, and indie hacker. Formerly worked at Meituan, Alibaba. In my free time I like to explore bleeding-edge technologies purely for fun.",
+  "I'm intensely curious, with a deep thirst for knowledge of all kinds. And there's a rebellious spark in me😈. I enjoy jogging, reading, and deep chat over a glass of 🍻.",
+  'All in AI.',
 ]
 
 // blog
@@ -48,7 +48,7 @@ export const socialLinks: Array<SocialLinkType> = [
   },
   {
     name: 'Jike',
-    icon: 'pill',
+    icon: 'jike',
     href: 'https://okjk.co/P7c1zU',
   },
   {
@@ -80,7 +80,7 @@ export const techIcons = [
   'docker',
   'git',
   'github',
-  'visualstudiocode',
+  // 'visualstudiocode',
   'ios',
   'apple',
   'wechat',
@@ -90,5 +90,5 @@ export const techIcons = [
   'hono',
   'bun',
   'tailwindcss',
-  'cursor',
+  // 'cursor',
 ]
