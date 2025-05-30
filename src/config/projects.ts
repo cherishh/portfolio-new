@@ -25,7 +25,7 @@ export type ProjectItemType = {
 export const projects: Array<ProjectItemType> = [
   {
     name: 'Easy Habit',
-    description: 'Vibe coding a iOS app with 0 experience',
+    description: 'Vibe coding an iOS app with 0 experience',
     detail:
       'This is a minimal habit tracker, born from my own need. I was looking for a simple, easy-to-use app that would let me check off habits directly from a widget—but couldn’t find one that worked well. So, with no prior iOS development experience, I built it myself through vibe coding.',
     link: { href: 'todo', label: 'Easy Habit' },
