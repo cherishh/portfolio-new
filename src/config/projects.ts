@@ -28,7 +28,10 @@ export const projects: Array<ProjectItemType> = [
     description: 'Vibe coding an iOS app with 0 experience',
     detail:
       'This is a minimal habit tracker, born from my own need. I was looking for a simple, easy-to-use app that would let me check off habits directly from a widget—but couldn’t find one that worked well. So, with no prior iOS development experience, I built it myself through vibe coding.',
-    link: { href: 'https://www.apple.com/app-store/', label: 'Easy Habit' },
+    link: {
+      href: 'https://apps.apple.com/cn/app/easy-habit/id6743850926?l=en-GB',
+      label: 'Easy Habit',
+    },
     logo: 'https://pub-a443e563a0f4468c84a76b4d1d42e0a7.r2.dev/porforlio%20stuff/4.png',
     category: ['iOS'],
     techStack: ['Swift', 'SwiftUI', 'Xcode'],
