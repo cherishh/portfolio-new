@@ -96,7 +96,7 @@ export const githubProjects: Array<ProjectItemType> = [
   {
     name: 'Easy Habit',
     description:
-      'A beautiful habit tracker iOS app. The project started from a personal need. I looked around but couldn’t find anything that met my expectations, so I built one myself.',
+      'A beautiful habit tracker iOS app. The project started from a personal need. I looked around but couldn’t find anything that met my expectations, so I "vibe coded" one myself.',
     link: {
       href: 'github.com/cherishh/minimal-habit-tracker',
       label: 'iOS',
@@ -107,7 +107,7 @@ export const githubProjects: Array<ProjectItemType> = [
   {
     name: 'Nextjs Starter Template',
     description:
-      'My personal Nextjs starter template, with everything included: authentication, ORM, database, CMS, UI framework, CI, deployment, analytics, logging, monitoring, rate limiting, literally everything to get started.',
+      'A Nextjs starter template, with everything included: authentication, ORM, database, CMS, UI framework, CI, deployment, analytics, logging, monitoring, rate limiting...\nLiterally everything to get started.',
     link: {
       href: 'github.com/cherishh/nextjs-all-in-one-template',
       label: 'nextjs-starter-template',
