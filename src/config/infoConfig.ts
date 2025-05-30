@@ -49,7 +49,7 @@ export const socialLinks: Array<SocialLinkType> = [
   {
     name: 'Jike',
     icon: 'jike',
-    href: 'https://okjk.co/P7c1zU',
+    href: 'https://okjk.co/axeG1b',
   },
   {
     name: 'Github',

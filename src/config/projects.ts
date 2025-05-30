@@ -68,7 +68,7 @@ export const projects: Array<ProjectItemType> = [
     description:
       'A ChatGPT-style UI designed for people who can’t access OpenAI’s official site',
     detail:
-      'A ChatGPT-style UI designed for people who can’t access OpenAI’s official site, offering an easy way to experience ChatGPT. The project aims to help more people understand AI technology, while also serving as a learning exercise in building a basic conversational AI. This project is no longer maintained.',
+      'A ChatGPT-style UI designed for people who can’t access OpenAI’s official site, offering an easy way to experience ChatGPT. The project aims to help more people understand AI technology, while also serving as a learning exercise in building a basic conversational AI. This project is no longer maintained, since we can easily access many (more advanced) AI chatbots now.',
     link: { href: 'chatgpt-ui', label: 'ChatGPT UI' },
     logo: 'https://www.chatbotui.com/icon-256x256.png',
     category: ['Website'],
