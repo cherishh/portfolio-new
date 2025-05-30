@@ -4,9 +4,19 @@ import Image from 'next/image'
 
 const title = 'Projects'
 
-export default function ProjectPage({ params }: { params: { slug: string } }) {
-  console.log(params.slug, 'params.slug')
-  const project = projects.find((project) => project.link.href === params.slug)
+export async function generateStaticParams() {
+  return projects.map((project) => ({
+    slug: project.link.href,
+  }))
+}
+
+export default async function ProjectPage({
+  params,
+}: {
+  params: { slug: string }
+}) {
+  const { slug } = await params
+  const project = projects.find((project) => project.link.href === slug)
   if (!project) {
     return (
       <SimpleLayout title={title}>

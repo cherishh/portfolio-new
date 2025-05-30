@@ -7,9 +7,6 @@ const OPENPANEL_PROJECT_ID = process.env.OPENPANEL_PROJECT_ID
 export async function GET() {
   try {
     // 获取总访问数据
-    console.log('OPENPANEL_CLIENT_ID: ', OPENPANEL_CLIENT_ID)
-    console.log('OPENPANEL_SECRET_ID: ', OPENPANEL_SECRET_ID)
-    console.log('OPENPANEL_PROJECT_ID: ', OPENPANEL_PROJECT_ID)
 
     const response = await fetch(
       `${OPENPANEL_API_URL}/export/events?projectId=${OPENPANEL_PROJECT_ID}&event=screen_view`,
