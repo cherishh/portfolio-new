@@ -5,7 +5,8 @@ import Image from 'next/image'
 const title = 'Projects'
 
 export default function ProjectPage({ params }: { params: { slug: string } }) {
-  const project = projects.find((project) => project.name === params.slug)
+  console.log(params.slug, 'params.slug')
+  const project = projects.find((project) => project.link.href === params.slug)
   if (!project) {
     return (
       <SimpleLayout title={title}>
@@ -19,8 +20,8 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
       <div>
         <div key={project.name}>
           <div className="text-2xl font-bold">{project.name}</div>
-          <div className="text-lg text-zinc-500">{project.description}</div>
-          <div className="mt-4">
+          <div className="mt-4 text-lg text-zinc-500">{project.detail}</div>
+          <div className="m-8 flex items-center justify-center">
             <Image
               src={project.demo || ''}
               alt={project.name}
@@ -29,7 +30,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
             />
           </div>
           {project.qrcode && (
-            <div className="mt-4">
+            <div className="mt-4 flex items-center justify-center">
               <Image
                 src={project.qrcode}
                 alt={project.name}
