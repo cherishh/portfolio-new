@@ -73,7 +73,7 @@ export const projects: Array<ProjectItemType> = [
     detail:
       'A ChatGPT-style UI designed for people who can’t access OpenAI’s official site, offering an easy way to experience ChatGPT. The project aims to help more people understand AI technology, while also serving as a learning exercise in building a basic conversational AI. This project is no longer maintained, since we can easily access many (more advanced) AI chatbots now.',
     link: { href: 'chatgpt-ui', label: 'ChatGPT UI' },
-    logo: 'https://www.chatbotui.com/icon-256x256.png',
+    logo: 'https://pub-a443e563a0f4468c84a76b4d1d42e0a7.r2.dev/porforlio%20stuff/bot.png',
     category: ['Website'],
     techStack: ['Next.js', 'TailwindCSS', 'Shadcn/UI', 'OpenAI API'],
     tags: ['ChatGPT', 'AI', 'Conversational AI'],
