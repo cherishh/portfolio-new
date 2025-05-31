@@ -8,25 +8,25 @@ export async function GET() {
   try {
     // 获取总访问数据
 
-    const response = await fetch(
-      `${OPENPANEL_API_URL}/export/events?projectId=${OPENPANEL_PROJECT_ID}&event=screen_view`,
-      {
-        headers: {
-          'openpanel-client-id': OPENPANEL_CLIENT_ID!,
-          'openpanel-client-secret': OPENPANEL_SECRET_ID!,
-        },
-      },
-    )
+    // const response = await fetch(
+    //   `${OPENPANEL_API_URL}/export/events?projectId=${OPENPANEL_PROJECT_ID}&event=screen_view`,
+    //   {
+    //     headers: {
+    //       'openpanel-client-id': OPENPANEL_CLIENT_ID!,
+    //       'openpanel-client-secret': OPENPANEL_SECRET_ID!,
+    //     },
+    //   },
+    // )
 
-    // console.log('response: ', response)
-    if (!response.ok) {
-      console.log('response: ', response)
-      throw new Error('Failed to fetch visit stats')
-    }
+    // // console.log('response: ', response)
+    // if (!response.ok) {
+    //   console.log('response: ', response)
+    //   throw new Error('Failed to fetch visit stats')
+    // }
 
-    const data = await response.json()
+    // const data = await response.json()
     // console.log('data: ', data)
-    const totalUV = data?.meta?.totalCount
+    // const totalUV = data?.meta?.totalCount
 
     // 获取今日访问数据
     // 昨天的 yyyy-MM-dd
@@ -54,7 +54,8 @@ export async function GET() {
 
     const todayData = await todayResponse.json()
     // console.log('todayData: ', todayData)
-    const dailyUV = todayData?.meta?.totalCount
+    const totalUV = todayData?.meta?.totalCount
+    const dailyUV = todayData?.meta?.count
 
     return NextResponse.json({
       totalUV,
