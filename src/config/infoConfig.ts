@@ -10,7 +10,7 @@ export const name = 'Tuxi'
 export const headline =
   'Software engineer, full-stack web developer, and indie hacker.'
 export const introduction =
-  'I’m Tuxi(图蜥), a software engineer based in Shanghai, China. I like coding, and building interesting things'
+  'I’m Tuxi(图蜥), a software engineer based in Shanghai, China. I like building interesting things. And I have a broad interest in all kinds of tech stacks.'
 export const email = 'one77r@gmail.com'
 export const githubUsername = 'Cherishh'
 
@@ -37,6 +37,11 @@ export type SocialLinkType = {
 
 export const socialLinks: Array<SocialLinkType> = [
   {
+    name: 'Jike',
+    icon: 'jike',
+    href: 'https://okjk.co/axeG1b',
+  },
+  {
     name: 'X',
     icon: 'x',
     href: 'https://x.com/tuatara_ai',
@@ -45,11 +50,6 @@ export const socialLinks: Array<SocialLinkType> = [
     name: 'Bsky',
     icon: 'bsky',
     href: 'https://bsky.app/profile/tuxiii.bsky.social',
-  },
-  {
-    name: 'Jike',
-    icon: 'jike',
-    href: 'https://okjk.co/axeG1b',
   },
   {
     name: 'Github',

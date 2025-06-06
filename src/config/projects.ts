@@ -90,8 +90,18 @@ export const githubProjects: Array<ProjectItemType> = [
       href: 'github.com/cherishh/tanstack-start-template',
       label: 'tanstack-start',
     },
-    gitStars: 3,
-    // gitForks: 67,
+    gitStars: 18,
+    gitForks: 3,
+  },
+  {
+    name: 'Agentic RAG',
+    description:
+      'This is a small but compact RAG system with agentic capabilities. On top of basic RAG, it also has a simple agentic layer that detect user intent and call the appropriate tools; calling external APIs, cross-query multiple datasets, etc.',
+    link: {
+      href: 'github.com/cherishh/agentic-rag-ts',
+      label: 'Agentic RAG',
+    },
+    gitStars: 1,
   },
   {
     name: 'Easy Habit',

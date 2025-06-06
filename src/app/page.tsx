@@ -118,7 +118,7 @@ export default async function Home() {
             <Education />
 
             {/* <Newsletter /> */}
-            <Feed />
+            {/* <Feed /> */}
           </div>
         </div>
         {/* <div className="mx-auto my-4 flex max-w-xl flex-col gap-6 border-t border-muted py-8 lg:max-w-none">
