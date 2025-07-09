@@ -10,7 +10,8 @@ import SocialLinks from '@/components/about/SocialLinks'
 
 export const metadata: Metadata = {
   title: 'About',
-  description: 'I’m Tuxi. I live in Shanghai, where I design the future.',
+  description:
+    'Learn about Tuxi, a passionate full-stack web developer and indie hacker exploring cutting-edge tech. Connect through projects, blogs, and social media.',
 }
 
 export default function About() {

@@ -7,8 +7,7 @@ export * from './activity'
 
 // personal info
 export const name = 'Tuxi'
-export const headline =
-  'Software engineer, full-stack web developer, and indie hacker.'
+export const headline = 'Full-Stack Developer & Indie Hacker'
 export const introduction =
   'I’m Tuxi(图蜥), a software engineer based in Shanghai, China. I like building interesting things. And I have a broad interest in all kinds of tech stacks.'
 export const email = 'one77r@gmail.com'
@@ -101,6 +100,9 @@ export const techIcons = [
   'tensorflow',
   'pandas',
   'huggingface',
+  'vite',
+  'railway',
+  'flyio',
 
   // NOT USE YET
   // 'LangChain',

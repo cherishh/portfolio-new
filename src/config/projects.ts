@@ -24,6 +24,56 @@ export type ProjectItemType = {
 // projects
 export const projects: Array<ProjectItemType> = [
   {
+    name: 'Sketch Magic',
+    description: 'Transform Drawings into Images, using the magic of AI.',
+    link: {
+      href: 'https://www.sketchmagic.org/',
+      label: 'Sketch Magic',
+    },
+    logo: 'https://pub-a443e563a0f4468c84a76b4d1d42e0a7.r2.dev/porforlio%20stuff/sketch-icon.png',
+    category: ['Website'],
+    techStack: ['Next.js', 'TailwindCSS', 'Shadcn/UI', 'FLUX API'],
+    tags: ['AI', 'Image Generation', 'Fun'],
+  },
+  {
+    name: 'Blur Background',
+    description:
+      'A simple web app that allows you to blur the background of an image, using the power of AI.',
+    link: {
+      href: 'https://www.blurbackground.app/',
+      label: 'Blur Background',
+    },
+    logo: 'https://pub-a443e563a0f4468c84a76b4d1d42e0a7.r2.dev/porforlio%20stuff/blur-bg-icon.png',
+    category: ['Website'],
+    techStack: ['Next.js', 'TailwindCSS', 'Shadcn/UI', 'FLUX API'],
+    tags: ['AI', 'Image Processing', 'Fun'],
+  },
+  {
+    name: 'AI Banner Generator',
+    description: 'Create beautiful banners/backgrounds with AI, in seconds.',
+    link: {
+      href: 'https://www.aibanner.ai/',
+      label: 'AI Banner Generator',
+    },
+    logo: 'https://pub-a443e563a0f4468c84a76b4d1d42e0a7.r2.dev/porforlio%20stuff/aibanner-icon.png',
+    category: ['Website'],
+    techStack: ['Next.js', 'TailwindCSS', 'Shadcn/UI', 'FLUX API'],
+    tags: ['AI', 'Image Generation', 'Productivity'],
+  },
+  {
+    name: 'Agentic RAG',
+    description:
+      'Small but compact RAG system with agentic capabilities. On top of basic RAG, it can cross-query multiple datasets. It also has a simple agentic layer that detect user intent and call the appropriate tools.',
+    link: {
+      href: 'https://agentic-rag-fe-chi.vercel.app/',
+      label: 'Agentic RAG',
+    },
+    logo: 'https://pub-a443e563a0f4468c84a76b4d1d42e0a7.r2.dev/porforlio%20stuff/rag-icon.png',
+    category: ['Website'],
+    techStack: ['Next.js', 'TailwindCSS', 'Shadcn/UI', 'OpenAI API'],
+    tags: ['AI', 'RAG', 'Agentic'],
+  },
+  {
     name: 'Easy Habit',
     description: 'Vibe coding an iOS app with 0 experience',
     detail:
@@ -60,7 +110,7 @@ export const projects: Array<ProjectItemType> = [
     detail:
       'This project started in early 2023. Even back then, I realized that the future of AI would be all about AI taking action on its own. So I began building an app that could execute stock trades directly from a chat interface. But due to the technical challenges and limited time, I eventually had to put it on hold. Looking back, it was essentially what we now call an “agent.”',
     link: { href: 'personal-ai-assistant', label: 'Personal AI Assistant' },
-    logo: 'https://pub-a443e563a0f4468c84a76b4d1d42e0a7.r2.dev/porforlio%20stuff/bot.png',
+    logo: 'https://pub-a443e563a0f4468c84a76b4d1d42e0a7.r2.dev/porforlio%20stuff/bot_icon.png',
     category: ['AI'],
     techStack: ['Next.js', 'TailwindCSS', 'Shadcn/UI', 'OpenAI API'],
     tags: ['AI', 'OpenAI API', 'Agent'],
@@ -83,6 +133,15 @@ export const projects: Array<ProjectItemType> = [
 
 export const githubProjects: Array<ProjectItemType> = [
   {
+    name: 'Generic AI Agent',
+    description:
+      "Demonstrate performance of my generic agent. It's tested on the GAIA benchmark, and currently ranked **150/5165 on the huggingface leaderboard** (as of July 8, 2025).",
+    link: {
+      href: 'github.com/cherishh/hf-GAIA-agent',
+      label: 'Generic AI Agent',
+    },
+  },
+  {
     name: 'Tanstack Start Template',
     description:
       'Tanstack Start is an alternitive to Nextjs that rapidly getting attention in web dev community. This is a template for building a web app with Tanstack Start, with everything you need including authentication, database, deployment, and more.',
@@ -90,8 +149,8 @@ export const githubProjects: Array<ProjectItemType> = [
       href: 'github.com/cherishh/tanstack-start-template',
       label: 'tanstack-start',
     },
-    gitStars: 18,
-    gitForks: 3,
+    gitStars: 19,
+    gitForks: 1,
   },
   {
     name: 'Agentic RAG',
