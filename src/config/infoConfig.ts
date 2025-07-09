@@ -9,7 +9,7 @@ export * from './activity'
 export const name = 'Tuxi'
 export const headline = 'Full-Stack Developer & Indie Hacker'
 export const introduction =
-  'I’m Tuxi(图蜥), a software engineer based in Shanghai, China. I like building interesting things. And I have a broad interest in all kinds of tech stacks.'
+  'I’m Tuxi(图蜥), a software engineer based in Shanghai, China. I like building interesting things. And I have a broad interest in all kinds of tech related stuff.'
 export const email = 'one77r@gmail.com'
 export const githubUsername = 'Cherishh'
 
@@ -18,7 +18,7 @@ export const aboutMeHeadline = 'This guy'
 export const aboutParagraphs = [
   // 'I used to live by “hustle nonstop.” Studied medicine, coded, worked in finance, and chased shortcuts in life. Now I realize: slow is fast. What matters is meaningful work and meaningful relationships.',
   "I'm a software engineer, full-stack web developer, and indie hacker. Formerly worked at Meituan and Alibaba. In my free time I like to explore bleeding-edge technologies purely for fun.",
-  "I'm intensely curious, with a deep thirst for knowledge of all kinds. And there's a rebellious spark in me😈. I enjoy jogging, reading, singing, and deep chat over a glass of 🍻.",
+  "I'm intensely curious, with a deep thirst for knowledge of all kinds. I enjoy jogging, reading, singing, and deep chat over a glass of 🍻.",
   'I genuinely believe in AI.',
 ]
 

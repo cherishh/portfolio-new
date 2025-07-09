@@ -1,7 +1,7 @@
 // projects
 export const projectHeadLine = "What I've done and what I'm doing."
 export const projectIntro =
-  "I've made a variety of AI related pet projects just for fun. Here are a few of my favorites."
+  "I've made a variety of AI related projects. Some are a bit serious and likely to be profitable, some are just for fun. Here are a few of my favorites."
 
 export type ProjectItemType = {
   name: string
@@ -26,7 +26,7 @@ export type ProjectItemType = {
 export const projects: Array<ProjectItemType> = [
   {
     name: 'Sketch Magic',
-    description: 'Transform Drawings into Images, using the magic of AI.',
+    description: 'Transform drawings into Images, using the magic of AI.',
     link: {
       href: 'https://www.sketchmagic.org/',
       label: 'Sketch Magic',
@@ -176,9 +176,9 @@ export const githubProjects: Array<ProjectItemType> = [
   //   // gitForks: 30,
   // },
   {
-    name: 'Nextjs Starter Template',
+    name: 'Nextjs SaaS Template',
     description:
-      'A Nextjs starter template, with everything included: authentication, ORM, database, CMS, UI framework, CI, deployment, analytics, logging, monitoring, rate limiting...\nLiterally everything to get started.',
+      'A minimal Nextjs SaaS template, with everything included: authentication, ORM, database, CMS, UI framework, CI, deployment, analytics, logging, monitoring, rate limiting...\nLiterally everything to get started.',
     link: {
       href: 'github.com/cherishh/nextjs-all-in-one-template',
       label: 'nextjs-starter-template',
