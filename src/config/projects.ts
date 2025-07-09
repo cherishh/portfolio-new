@@ -19,6 +19,7 @@ export type ProjectItemType = {
   gitStars?: number
   gitForks?: number
   qrcode?: string
+  achievement?: string
 }
 
 // projects
@@ -38,7 +39,7 @@ export const projects: Array<ProjectItemType> = [
   {
     name: 'Blur Background',
     description:
-      'A simple web app that allows you to blur the background of an image, using the power of AI.',
+      'Blur the background of an image, save your photos, using the power of AI.',
     link: {
       href: 'https://www.blurbackground.app/',
       label: 'Blur Background',
@@ -71,7 +72,7 @@ export const projects: Array<ProjectItemType> = [
     logo: 'https://pub-a443e563a0f4468c84a76b4d1d42e0a7.r2.dev/porforlio%20stuff/rag-icon.png',
     category: ['Website'],
     techStack: ['Next.js', 'TailwindCSS', 'Shadcn/UI', 'OpenAI API'],
-    tags: ['AI', 'RAG', 'Agentic'],
+    tags: ['AI', 'RAG', 'Agentic', 'Experimental'],
   },
   {
     name: 'Easy Habit',
@@ -85,7 +86,7 @@ export const projects: Array<ProjectItemType> = [
     logo: 'https://pub-a443e563a0f4468c84a76b4d1d42e0a7.r2.dev/porforlio%20stuff/4.png',
     category: ['iOS'],
     techStack: ['Swift', 'SwiftUI', 'Xcode'],
-    tags: ['iOS', 'Swift', 'SwiftUI', 'Cursor'],
+    tags: ['AI', 'Cursor', 'iOS', 'Swift', 'SwiftUI', 'Productivity'],
     demo: 'https://pub-a443e563a0f4468c84a76b4d1d42e0a7.r2.dev/porforlio%20stuff/meme2.gif',
     qrcode:
       'https://pub-a443e563a0f4468c84a76b4d1d42e0a7.r2.dev/porforlio%20stuff/qrcode.jpg',
@@ -99,7 +100,7 @@ export const projects: Array<ProjectItemType> = [
     logo: 'https://pub-a443e563a0f4468c84a76b4d1d42e0a7.r2.dev/porforlio%20stuff/1.png',
     category: ['Wechat'],
     techStack: ['Midjourney', 'Photoshop', 'Python'],
-    tags: ['Wechat', 'AI', 'Sticker', 'Fun'],
+    tags: ['Wechat Sticker', 'AI', 'Midjourney', 'Fun'],
     demo: 'https://pub-a443e563a0f4468c84a76b4d1d42e0a7.r2.dev/porforlio%20stuff/meme2.gif',
     qrcode:
       'https://pub-a443e563a0f4468c84a76b4d1d42e0a7.r2.dev/porforlio%20stuff/qrcode.jpg',
@@ -126,7 +127,7 @@ export const projects: Array<ProjectItemType> = [
     logo: 'https://pub-a443e563a0f4468c84a76b4d1d42e0a7.r2.dev/porforlio%20stuff/bot.png',
     category: ['Website'],
     techStack: ['Next.js', 'TailwindCSS', 'Shadcn/UI', 'OpenAI API'],
-    tags: ['ChatGPT', 'AI', 'Conversational AI'],
+    tags: ['ChatGPT', 'Chatbot'],
     demo: 'https://pub-a443e563a0f4468c84a76b4d1d42e0a7.r2.dev/porforlio%20stuff/gpt2.gif',
   },
 ]
@@ -135,11 +136,12 @@ export const githubProjects: Array<ProjectItemType> = [
   {
     name: 'Generic AI Agent',
     description:
-      "Demonstrate performance of my generic agent. It's tested on the GAIA benchmark, and currently ranked **150/5165 on the huggingface leaderboard** (as of July 8, 2025).",
+      "Demonstrate performance of my generic agent. It's tested on the GAIA benchmark.",
     link: {
       href: 'github.com/cherishh/hf-GAIA-agent',
       label: 'Generic AI Agent',
     },
+    achievement: 'Rank 150th on 🤗HuggingFace',
   },
   {
     name: 'Tanstack Start Template',
@@ -162,17 +164,17 @@ export const githubProjects: Array<ProjectItemType> = [
     },
     gitStars: 1,
   },
-  {
-    name: 'Easy Habit',
-    description:
-      'A beautiful habit tracker iOS app. The project started from a personal need. I looked around but couldn’t find anything that met my expectations, so I "vibe coded" one myself.',
-    link: {
-      href: 'github.com/cherishh/minimal-habit-tracker',
-      label: 'iOS',
-    },
-    gitStars: 1,
-    // gitForks: 30,
-  },
+  // {
+  //   name: 'Easy Habit',
+  //   description:
+  //     'A beautiful habit tracker iOS app. The project started from a personal need. I looked around but couldn’t find anything that met my expectations, so I "vibe coded" one myself.',
+  //   link: {
+  //     href: 'github.com/cherishh/minimal-habit-tracker',
+  //     label: 'iOS',
+  //   },
+  //   gitStars: 1,
+  //   // gitForks: 30,
+  // },
   {
     name: 'Nextjs Starter Template',
     description:
