@@ -107,7 +107,7 @@ export const projects: Array<ProjectItemType> = [
   },
   {
     name: 'Personal AI Assistant',
-    description: 'AI agent in early 2023',
+    description: 'My AI agent in early 2023 (before "agent" was even a thing)',
     detail:
       'This project started in early 2023. Even back then, I realized that the future of AI would be all about AI taking action on its own. \nSo I began building an app that could execute stock trades directly from a chat interface. But due to the technical challenges and limited time, I eventually had to put it on hold. \nLooking back, it was essentially what we now call an “agent.”',
     link: { href: 'personal-ai-assistant', label: 'Personal AI Assistant' },
