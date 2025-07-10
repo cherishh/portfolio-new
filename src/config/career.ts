@@ -25,14 +25,14 @@ export const careerList: Array<CareerItemType> = [
   },
   {
     company: 'Clobotics',
-    title: 'Software Engineer',
+    title: 'Full-Stack Engineer',
     logo: 'bank',
     start: '2018',
     end: '2019',
   },
   {
     company: 'CEFC Shanghai Securities',
-    title: 'Software Engineer',
+    title: 'Frontend Engineer',
     logo: 'bank',
     start: '2017',
     end: '2018',

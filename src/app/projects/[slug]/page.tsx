@@ -1,6 +1,7 @@
 import { SimpleLayout } from '@/components/layout/SimpleLayout'
 import { projects } from '@/config/infoConfig'
 import Image from 'next/image'
+import React from 'react'
 
 const title = 'Projects'
 
@@ -30,7 +31,15 @@ export default async function ProjectPage({
       <div>
         <div key={project.name}>
           <div className="text-2xl font-bold">{project.name}</div>
-          <div className="mt-4 text-lg text-zinc-500">{project.detail}</div>
+          <div className="mt-4 text-lg text-zinc-500">
+            {project.detail &&
+              project.detail.split('\n').map((line, index) => (
+                <React.Fragment key={index}>
+                  {line}
+                  <br />
+                </React.Fragment>
+              ))}
+          </div>
           <div className="m-8 flex items-center justify-center">
             <Image
               src={project.demo || ''}

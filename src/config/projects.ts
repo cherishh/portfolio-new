@@ -109,7 +109,7 @@ export const projects: Array<ProjectItemType> = [
     name: 'Personal AI Assistant',
     description: 'AI agent in early 2023',
     detail:
-      'This project started in early 2023. Even back then, I realized that the future of AI would be all about AI taking action on its own. So I began building an app that could execute stock trades directly from a chat interface. But due to the technical challenges and limited time, I eventually had to put it on hold. Looking back, it was essentially what we now call an “agent.”',
+      'This project started in early 2023. Even back then, I realized that the future of AI would be all about AI taking action on its own. \nSo I began building an app that could execute stock trades directly from a chat interface. But due to the technical challenges and limited time, I eventually had to put it on hold. \nLooking back, it was essentially what we now call an “agent.”',
     link: { href: 'personal-ai-assistant', label: 'Personal AI Assistant' },
     logo: 'https://pub-a443e563a0f4468c84a76b4d1d42e0a7.r2.dev/porforlio%20stuff/bot_icon.png',
     category: ['AI'],
@@ -122,7 +122,7 @@ export const projects: Array<ProjectItemType> = [
     description:
       'A ChatGPT-style UI designed for people who can’t access OpenAI’s official site',
     detail:
-      'A ChatGPT-style UI designed for people who can’t access OpenAI’s official site, offering an easy way to experience ChatGPT. The project aims to help more people understand AI technology, while also serving as a learning exercise in building a basic conversational AI. This project is no longer maintained, since we can easily access many (more advanced) AI chatbots now.',
+      'This project was started not long after the break out of ChatGPT. Back then a lot of people couldn’t access OpenAI’s official site, so I built this ChatGPT-style UI designed for people who can’t access OpenAI’s official site, offering an easy way to experience ChatGPT. \nThe project aims to help more people experience & understand AI technology, while also serving as a learning exercise in building a basic conversational AI. \nThis project is no longer maintained, since we can easily access many (more advanced) AI chatbots now.',
     link: { href: 'chatgpt-ui', label: 'ChatGPT UI' },
     logo: 'https://pub-a443e563a0f4468c84a76b4d1d42e0a7.r2.dev/porforlio%20stuff/bot.png',
     category: ['Website'],
@@ -136,7 +136,7 @@ export const githubProjects: Array<ProjectItemType> = [
   {
     name: 'Generic AI Agent',
     description:
-      "Demonstrate performance of my generic agent. It's tested on the GAIA benchmark.",
+      'Generic purpose agent that can plan & perform complex multi-step tasks. It uses LangGraph as the workflow engine, along with over 20+ tools, and tested on the GAIA benchmark.',
     link: {
       href: 'github.com/cherishh/hf-GAIA-agent',
       label: 'Generic AI Agent',
@@ -146,7 +146,7 @@ export const githubProjects: Array<ProjectItemType> = [
   {
     name: 'Tanstack Start Template',
     description:
-      'Tanstack Start is an alternitive to Nextjs that rapidly getting attention in web dev community. This is a template for building a web app with Tanstack Start, with everything you need including authentication, database, deployment, and more.',
+      'Tanstack Start is an alternitive to Nextjs that rapidly getting attention in web dev community. This is a template for building a web SaaS using Tanstack Start, with everything you need including authentication, database, deployment, and more.',
     link: {
       href: 'github.com/cherishh/tanstack-start-template',
       label: 'tanstack-start',
@@ -157,7 +157,7 @@ export const githubProjects: Array<ProjectItemType> = [
   {
     name: 'Agentic RAG',
     description:
-      'This is a small but compact RAG system with agentic capabilities. On top of basic RAG, it also has a simple agentic layer that detect user intent and call the appropriate tools; calling external APIs, cross-query multiple datasets, etc.',
+      'Small but compact RAG system with agentic capabilities. On top of basic RAG, it has the ability to cross-query multiple datasets; and also has a simple agentic layer that detect user intent and call the appropriate tools; calling external APIs, etc. \nThis one uses LlamaIndex as the RAG engine.',
     link: {
       href: 'github.com/cherishh/agentic-rag-ts',
       label: 'Agentic RAG',
@@ -178,7 +178,7 @@ export const githubProjects: Array<ProjectItemType> = [
   {
     name: 'Nextjs SaaS Template',
     description:
-      'A minimal Nextjs SaaS template, with everything included: authentication, ORM, database, CMS, UI framework, CI, deployment, analytics, logging, monitoring, rate limiting...\nLiterally everything to get started.',
+      'A complete Nextjs SaaS template, with everything included: authentication, ORM, database, CMS, UI framework, CI, deployment, analytics, logging, monitoring, rate limiting...\nLiterally everything to get started.',
     link: {
       href: 'github.com/cherishh/nextjs-all-in-one-template',
       label: 'nextjs-starter-template',
