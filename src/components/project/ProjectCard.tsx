@@ -1,12 +1,11 @@
 'use client'
 
-import { ArrowRightIcon, HashIcon } from 'lucide-react'
+import { HashIcon } from 'lucide-react'
 import Image from 'next/image'
-import { ArrowUpRight } from '@phosphor-icons/react'
 import { ProjectItemType } from '@/config/infoConfig'
 import { utm_source } from '@/config/siteConfig'
 import Link from 'next/link'
-import { Favicon } from 'favicon-stealer'
+import { CustomIcon } from '../shared/CustomIcon'
 
 export function ProjectCard({
   project,
@@ -70,9 +69,9 @@ export function ProjectCard({
           className="absolute inset-0 z-20"
         >
           {project.link.href.startsWith('http') ? (
-            <ArrowUpRight
+            <CustomIcon
+              name="arrow-up-right"
               size={32}
-              weight="duotone"
               className="absolute right-4 top-4 h-4 w-4 group-hover:cursor-pointer group-hover:text-primary"
             />
           ) : null}
