@@ -72,7 +72,7 @@ export const projects: Array<ProjectItemType> = [
     logo: 'https://pub-a443e563a0f4468c84a76b4d1d42e0a7.r2.dev/porforlio%20stuff/rag-icon.png',
     category: ['Website'],
     techStack: ['Next.js', 'TailwindCSS', 'Shadcn/UI', 'OpenAI API'],
-    tags: ['AI', 'RAG', 'Agentic', 'Experimental'],
+    tags: ['AI', 'RAG', 'LlamaIndex', 'Experimental'],
   },
   {
     name: 'Easy Habit',
@@ -134,7 +134,7 @@ export const projects: Array<ProjectItemType> = [
 
 export const githubProjects: Array<ProjectItemType> = [
   {
-    name: 'Generic AI Agent',
+    name: 'Generic AI Agent (using LangGraph)',
     description:
       'Generic purpose agent that can plan & perform complex multi-step tasks. It uses LangGraph as the workflow engine, along with over 20+ tools, and tested on the GAIA benchmark.',
     link: {

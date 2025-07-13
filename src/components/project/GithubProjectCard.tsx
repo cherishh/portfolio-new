@@ -33,11 +33,7 @@ export function GithubProjectCard({
           <div className="flex flex-row items-center gap-2 text-xs font-semibold opacity-80">
             {project.achievement && (
               <p className="flex items-center gap-1 text-xs text-foreground">
-                <CustomIcon
-                  name="achievement"
-                  size={16}
-                  className="text-gray-800"
-                />
+                <CustomIcon name="achievement" size={16} />
                 {project.achievement}
               </p>
             )}
