@@ -84,6 +84,8 @@ export function CustomIcon({
       return <Briefcase size={size} weight="duotone" className={className} />
     case 'student':
       return <Student size={size} weight="duotone" className={className} />
+    case 'wechat':
+      return <WechatLogo size={size} weight="duotone" className={className} />
     default:
       return null
   }
