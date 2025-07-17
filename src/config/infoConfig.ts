@@ -19,7 +19,7 @@ export const aboutParagraphs = [
   // 'I used to live by “hustle nonstop.” Studied medicine, coded, worked in finance, and chased shortcuts in life. Now I realize: slow is fast. What matters is meaningful work and meaningful relationships.',
   "I'm a software engineer, full-stack web developer, and indie hacker. Formerly worked at Meituan and Alibaba. In my free time I like to explore bleeding-edge technologies purely for fun.",
   "I'm intensely curious, with a deep thirst for knowledge of all kinds. I enjoy jogging, reading, singing, and deep chat over a glass of 🍻.",
-  'I genuinely believe in AI.',
+  'I’m practical and transparent, always thinking from first principles. Love work with interesting people, always up for a good chat—anytime!',
 ]
 
 // blog
