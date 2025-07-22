@@ -25,11 +25,11 @@ export type ProjectItemType = {
 // projects
 export const projects: Array<ProjectItemType> = [
   {
-    name: 'Sketch Magic',
+    name: 'Sketch2Art',
     description: 'Transform drawings into Images, using the magic of AI.',
     link: {
-      href: 'https://www.sketchmagic.org/',
-      label: 'Sketch Magic',
+      href: 'https://sketch2.art/',
+      label: 'Sketch2Art',
     },
     logo: 'https://pub-a443e563a0f4468c84a76b4d1d42e0a7.r2.dev/porforlio%20stuff/sketch-icon.png',
     category: ['Website'],
