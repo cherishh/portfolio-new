@@ -43,6 +43,14 @@ export default function SocialLinks({ className }: { className?: string }) {
         rel="noreferrer"
         aria-label="Email"
         className="inline-flex h-10 w-10 items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground"
+        onMouseEnter={() => {
+          setIsHovering(true)
+          play()
+        }}
+        onMouseLeave={() => {
+          setIsHovering(false)
+          stop()
+        }}
       >
         <CustomIcon name="email" />
         <span className="sr-only">Email</span>
