@@ -38,3 +38,23 @@ export interface UploadProgress {
   status: 'pending' | 'uploading' | 'completed' | 'error'
   error?: string
 }
+
+export interface PresignedUploadResponse {
+  success: boolean
+  presignedUrl?: string
+  fields?: Record<string, string>
+  expiresIn?: number
+  error?: string
+}
+
+export interface UploadCompleteRequest {
+  fileName: string
+  fileSize: number
+  contentType?: string
+}
+
+export interface UploadCompleteResponse {
+  success: boolean
+  file?: FileItem
+  error?: string
+}

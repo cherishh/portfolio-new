@@ -15,8 +15,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(response, { status: 400 })
     }
 
-    // 检查文件大小 (100MB limit)
-    const maxSize = 100 * 1024 * 1024 // 100MB
+    // 检查文件大小 (4MB limit for Vercel)
+    const maxSize = 4 * 1024 * 1024 // 4MB (Vercel限制4.5MB，留0.5MB缓冲)
     if (file.size > maxSize) {
       const response: UploadResponse = {
         success: false,

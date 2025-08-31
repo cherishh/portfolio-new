@@ -23,8 +23,8 @@ const nextConfig = {
     ],
   },
   experimental: {
-    // 增加文件上传大小限制到100MB
-    bodySizeLimit: '100mb',
+    // 预签名URL API只需处理轻量级请求，保持默认限制
+    bodySizeLimit: '1mb',
   },
 }
 

@@ -14,6 +14,8 @@ import type {
   ListFilesResponse,
   DeleteResponse,
   DownloadResponse,
+  PresignedUploadResponse,
+  UploadCompleteResponse,
 } from '@/types/files'
 
 export default function FilesPage() {
@@ -22,7 +24,9 @@ export default function FilesPage() {
   const [isUploading, setIsUploading] = useState(false)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [password, setPassword] = useState('')
-  const [uploadProgress, setUploadProgress] = useState<{[key: string]: {progress: number, stage: string, error?: string}}>({})
+  const [uploadProgress, setUploadProgress] = useState<{
+    [key: string]: { progress: number; stage: string; error?: string }
+  }>({})
 
   // 获取文件列表
   const fetchFiles = useCallback(async () => {
@@ -206,119 +210,128 @@ export default function FilesPage() {
     }
   }
 
-  // 上传文件
+  // 上传文件 (使用预签名URL)
   const handleFileUpload = async (files: FileList) => {
     if (!files.length) return
 
-    // 预检查文件大小
-    const maxSize = 100 * 1024 * 1024 // 100MB
-    const oversizedFiles = Array.from(files).filter(file => file.size > maxSize)
-    
-    if (oversizedFiles.length > 0) {
-      oversizedFiles.forEach(file => {
-        toast.error(`${file.name}: File size exceeds 100MB limit (${Math.round(file.size / 1024 / 1024)}MB)`)
-      })
-      
-      // 过滤掉超大文件
-      const validFiles = Array.from(files).filter(file => file.size <= maxSize)
-      if (validFiles.length === 0) return
-      
-      files = validFiles as any as FileList
-    }
-
     setIsUploading(true)
     setUploadProgress({})
-    
+
     const uploadPromises = Array.from(files).map(async (file) => {
       const fileName = file.name
-      
-      // 初始化进度
-      setUploadProgress(prev => ({
-        ...prev,
-        [fileName]: { progress: 0, stage: 'Preparing...' }
-      }))
-
-      const formData = new FormData()
-      formData.append('file', file)
 
       try {
-        // 创建XMLHttpRequest以支持进度跟踪
-        const xhr = new XMLHttpRequest()
-        
-        const uploadPromise = new Promise<any>((resolve, reject) => {
+        // 初始化进度
+        setUploadProgress((prev) => ({
+          ...prev,
+          [fileName]: { progress: 0, stage: 'Preparing...' },
+        }))
+
+        // 第一步：获取预签名URL
+        setUploadProgress((prev) => ({
+          ...prev,
+          [fileName]: { progress: 10, stage: 'Getting upload URL...' },
+        }))
+
+        const presignedResponse = await fetch('/api/r2/presigned-url', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            fileName,
+            contentType: file.type,
+            fileSize: file.size,
+          }),
+        })
+
+        const presignedData: PresignedUploadResponse =
+          await presignedResponse.json()
+
+        if (!presignedData.success || !presignedData.presignedUrl) {
+          throw new Error(presignedData.error || 'Failed to get upload URL')
+        }
+
+        // 第二步：直接上传到R2
+        setUploadProgress((prev) => ({
+          ...prev,
+          [fileName]: { progress: 15, stage: 'Starting upload...' },
+        }))
+
+        const uploadPromise = new Promise<void>((resolve, reject) => {
+          const xhr = new XMLHttpRequest()
+
           xhr.upload.addEventListener('progress', (e) => {
             if (e.lengthComputable) {
-              const progress = Math.round((e.loaded / e.total) * 90) // 上传到服务器占90%
-              setUploadProgress(prev => ({
+              // 15% 到 90% 为实际上传进度
+              const progress = 15 + Math.round((e.loaded / e.total) * 75)
+              setUploadProgress((prev) => ({
                 ...prev,
-                [fileName]: { progress, stage: 'Uploading...' }
+                [fileName]: { progress, stage: 'Uploading to R2...' },
               }))
             }
           })
 
-          xhr.addEventListener('loadstart', () => {
-            setUploadProgress(prev => ({
-              ...prev,
-              [fileName]: { progress: 0, stage: 'Starting upload...' }
-            }))
-          })
-
-          xhr.onreadystatechange = () => {
-            if (xhr.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
-              // 服务器开始处理
-              setUploadProgress(prev => ({
+          xhr.onload = () => {
+            if (xhr.status >= 200 && xhr.status < 300) {
+              setUploadProgress((prev) => ({
                 ...prev,
-                [fileName]: { progress: 95, stage: 'Processing...' }
+                [fileName]: { progress: 90, stage: 'Upload complete...' },
               }))
-            } else if (xhr.readyState === XMLHttpRequest.DONE) {
-              if (xhr.status === 200) {
-                try {
-                  const result = JSON.parse(xhr.responseText)
-                  resolve(result)
-                } catch (error) {
-                  reject(new Error('Invalid JSON response'))
-                }
-              } else {
-                try {
-                  const errorResult = JSON.parse(xhr.responseText)
-                  reject(new Error(errorResult.error || `HTTP ${xhr.status}: ${xhr.statusText}`))
-                } catch {
-                  reject(new Error(`HTTP ${xhr.status}: ${xhr.statusText}`))
-                }
-              }
+              resolve()
+            } else {
+              reject(
+                new Error(`Upload failed: ${xhr.status} ${xhr.statusText}`),
+              )
             }
           }
 
-          xhr.onerror = () => reject(new Error('Network error'))
+          xhr.onerror = () => reject(new Error('Network error during upload'))
           xhr.ontimeout = () => reject(new Error('Upload timeout'))
 
-          xhr.open('POST', '/api/r2/upload')
+          xhr.open('PUT', presignedData.presignedUrl!)
           xhr.timeout = 300000 // 5分钟超时
-          xhr.send(formData)
+          if (file.type) {
+            xhr.setRequestHeader('Content-Type', file.type)
+          }
+          xhr.send(file)
         })
 
-        const result = await uploadPromise
+        await uploadPromise
 
-        if (result.success && result.file) {
-          setFiles((prevFiles) => [...prevFiles, result.file])
-          setUploadProgress(prev => ({
+        // 第三步：通知服务端完成上传
+        setUploadProgress((prev) => ({
+          ...prev,
+          [fileName]: { progress: 95, stage: 'Finalizing...' },
+        }))
+
+        const completeResponse = await fetch('/api/r2/upload-complete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            fileName,
+            fileSize: file.size,
+            contentType: file.type,
+          }),
+        })
+
+        const completeData: UploadCompleteResponse =
+          await completeResponse.json()
+
+        if (completeData.success && completeData.file) {
+          setFiles((prevFiles) => [...prevFiles, completeData.file!])
+          setUploadProgress((prev) => ({
             ...prev,
-            [fileName]: { progress: 100, stage: 'Complete' }
+            [fileName]: { progress: 100, stage: 'Complete' },
           }))
           return { success: true, fileName }
         } else {
-          const errorMsg = result.error || 'Unknown error'
-          setUploadProgress(prev => ({
-            ...prev,
-            [fileName]: { progress: 0, stage: 'Failed', error: errorMsg }
-          }))
-          return { success: false, fileName, error: errorMsg }
+          throw new Error(completeData.error || 'Failed to finalize upload')
         }
       } catch (error) {
-        const errorMsg = error instanceof Error ? error.message : 'Upload failed'
-        setUploadProgress(prev => ({
+        const errorMsg =
+          error instanceof Error ? error.message : 'Upload failed'
+        setUploadProgress((prev) => ({
           ...prev,
-          [fileName]: { progress: 0, stage: 'Failed', error: errorMsg }
+          [fileName]: { progress: 0, stage: 'Failed', error: errorMsg },
         }))
         return { success: false, fileName, error: errorMsg }
       }
@@ -335,7 +348,7 @@ export default function FilesPage() {
 
       if (failed.length > 0) {
         // 显示详细错误信息
-        failed.forEach(failedFile => {
+        failed.forEach((failedFile) => {
           toast.error(`${failedFile.fileName}: ${failedFile.error}`)
         })
       }
@@ -421,7 +434,8 @@ export default function FilesPage() {
           </p>
           <p className="mt-2 text-muted-foreground">
             Download links have 24-hour expiry, click &quot;Refresh Links&quot;
-            button to regenerate after expiry
+            button to regenerate after expiry. Now supports large file uploads
+            via direct R2 connection.
           </p>
         </div>
 
@@ -476,6 +490,9 @@ export default function FilesPage() {
           <p className="mt-2 text-sm text-muted-foreground">
             Drag files here to upload, or click this area to select files
           </p>
+          <p className="mt-1 text-xs text-green-600">
+            ✓ Direct upload to R2 - supports large files up to 5TB
+          </p>
         </div>
 
         {/* 上传进度显示 */}
@@ -485,7 +502,7 @@ export default function FilesPage() {
             {Object.entries(uploadProgress).map(([fileName, progress]) => (
               <div key={fileName} className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm truncate max-w-xs" title={fileName}>
+                  <span className="max-w-xs truncate text-sm" title={fileName}>
                     {fileName}
                   </span>
                   <div className="flex items-center gap-2">
@@ -495,18 +512,19 @@ export default function FilesPage() {
                       <span className="text-xs text-green-500">Complete</span>
                     ) : (
                       <div className="flex items-center gap-2">
-                        <span className="text-xs text-muted-foreground">{progress.progress}%</span>
-                        <span className="text-xs text-blue-500">{progress.stage}</span>
+                        <span className="text-xs text-muted-foreground">
+                          {progress.progress}%
+                        </span>
+                        <span className="text-xs text-blue-500">
+                          {progress.stage}
+                        </span>
                       </div>
                     )}
                   </div>
                 </div>
-                <Progress 
-                  value={progress.progress} 
-                  className="h-1"
-                />
+                <Progress value={progress.progress} className="h-1" />
                 {progress.error && (
-                  <p className="text-xs text-red-500 mt-1">{progress.error}</p>
+                  <p className="mt-1 text-xs text-red-500">{progress.error}</p>
                 )}
               </div>
             ))}

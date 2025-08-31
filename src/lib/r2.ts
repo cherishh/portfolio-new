@@ -108,6 +108,34 @@ export async function getDownloadUrl(key: string, expiresIn: number = 3600): Pro
   }
 }
 
+export async function getPresignedUploadUrl(
+  key: string, 
+  contentType?: string,
+  expiresIn: number = 3600
+): Promise<{
+  url: string
+  fields: Record<string, string>
+}> {
+  try {
+    const command = new PutObjectCommand({
+      Bucket: BUCKET_NAME,
+      Key: key,
+      ContentType: contentType,
+    })
+
+    const signedUrl = await getSignedUrl(r2Client, command, { expiresIn })
+    
+    // R2使用标准的预签名URL，不需要额外的表单字段
+    return {
+      url: signedUrl,
+      fields: {}
+    }
+  } catch (error) {
+    console.error('Failed to generate presigned upload URL:', error)
+    throw new Error('Failed to generate presigned upload URL')
+  }
+}
+
 export function getPublicUrl(key: string): string {
   // 如果你有配置自定义域名，请在这里替换
   // return `https://your-custom-domain.com/${key}`
