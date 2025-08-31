@@ -4,8 +4,9 @@ import { useState, useEffect, useCallback } from 'react'
 import { Container } from '@/components/layout/Container'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Upload, Plus, RefreshCw } from 'lucide-react'
+import { Upload, Plus, RefreshCw, X } from 'lucide-react'
 import { toast } from 'sonner'
+import { Progress } from '@/components/ui/progress'
 import { DataTable } from './data-table'
 import { createColumns } from './columns'
 import type {
@@ -21,6 +22,7 @@ export default function FilesPage() {
   const [isUploading, setIsUploading] = useState(false)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [password, setPassword] = useState('')
+  const [uploadProgress, setUploadProgress] = useState<{[key: string]: {progress: number, stage: string, error?: string}}>({})
 
   // 获取文件列表
   const fetchFiles = useCallback(async () => {
@@ -208,27 +210,117 @@ export default function FilesPage() {
   const handleFileUpload = async (files: FileList) => {
     if (!files.length) return
 
+    // 预检查文件大小
+    const maxSize = 100 * 1024 * 1024 // 100MB
+    const oversizedFiles = Array.from(files).filter(file => file.size > maxSize)
+    
+    if (oversizedFiles.length > 0) {
+      oversizedFiles.forEach(file => {
+        toast.error(`${file.name}: File size exceeds 100MB limit (${Math.round(file.size / 1024 / 1024)}MB)`)
+      })
+      
+      // 过滤掉超大文件
+      const validFiles = Array.from(files).filter(file => file.size <= maxSize)
+      if (validFiles.length === 0) return
+      
+      files = validFiles as any as FileList
+    }
+
     setIsUploading(true)
+    setUploadProgress({})
+    
     const uploadPromises = Array.from(files).map(async (file) => {
+      const fileName = file.name
+      
+      // 初始化进度
+      setUploadProgress(prev => ({
+        ...prev,
+        [fileName]: { progress: 0, stage: 'Preparing...' }
+      }))
+
       const formData = new FormData()
       formData.append('file', file)
 
       try {
-        const response = await fetch('/api/r2/upload', {
-          method: 'POST',
-          body: formData,
+        // 创建XMLHttpRequest以支持进度跟踪
+        const xhr = new XMLHttpRequest()
+        
+        const uploadPromise = new Promise<any>((resolve, reject) => {
+          xhr.upload.addEventListener('progress', (e) => {
+            if (e.lengthComputable) {
+              const progress = Math.round((e.loaded / e.total) * 90) // 上传到服务器占90%
+              setUploadProgress(prev => ({
+                ...prev,
+                [fileName]: { progress, stage: 'Uploading...' }
+              }))
+            }
+          })
+
+          xhr.addEventListener('loadstart', () => {
+            setUploadProgress(prev => ({
+              ...prev,
+              [fileName]: { progress: 0, stage: 'Starting upload...' }
+            }))
+          })
+
+          xhr.onreadystatechange = () => {
+            if (xhr.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
+              // 服务器开始处理
+              setUploadProgress(prev => ({
+                ...prev,
+                [fileName]: { progress: 95, stage: 'Processing...' }
+              }))
+            } else if (xhr.readyState === XMLHttpRequest.DONE) {
+              if (xhr.status === 200) {
+                try {
+                  const result = JSON.parse(xhr.responseText)
+                  resolve(result)
+                } catch (error) {
+                  reject(new Error('Invalid JSON response'))
+                }
+              } else {
+                try {
+                  const errorResult = JSON.parse(xhr.responseText)
+                  reject(new Error(errorResult.error || `HTTP ${xhr.status}: ${xhr.statusText}`))
+                } catch {
+                  reject(new Error(`HTTP ${xhr.status}: ${xhr.statusText}`))
+                }
+              }
+            }
+          }
+
+          xhr.onerror = () => reject(new Error('Network error'))
+          xhr.ontimeout = () => reject(new Error('Upload timeout'))
+
+          xhr.open('POST', '/api/r2/upload')
+          xhr.timeout = 300000 // 5分钟超时
+          xhr.send(formData)
         })
 
-        const result = await response.json()
+        const result = await uploadPromise
 
         if (result.success && result.file) {
           setFiles((prevFiles) => [...prevFiles, result.file])
-          return { success: true, fileName: file.name }
+          setUploadProgress(prev => ({
+            ...prev,
+            [fileName]: { progress: 100, stage: 'Complete' }
+          }))
+          return { success: true, fileName }
         } else {
-          return { success: false, fileName: file.name, error: result.error }
+          const errorMsg = result.error || 'Unknown error'
+          setUploadProgress(prev => ({
+            ...prev,
+            [fileName]: { progress: 0, stage: 'Failed', error: errorMsg }
+          }))
+          return { success: false, fileName, error: errorMsg }
         }
       } catch (error) {
-        return { success: false, fileName: file.name, error: 'Upload failed' }
+        const errorMsg = error instanceof Error ? error.message : 'Upload failed'
+        setUploadProgress(prev => ({
+          ...prev,
+          [fileName]: { progress: 0, stage: 'Failed', error: errorMsg }
+        }))
+        return { success: false, fileName, error: errorMsg }
       }
     })
 
@@ -242,8 +334,16 @@ export default function FilesPage() {
       }
 
       if (failed.length > 0) {
-        toast.error(`Failed to upload ${failed.length} file(s)`)
+        // 显示详细错误信息
+        failed.forEach(failedFile => {
+          toast.error(`${failedFile.fileName}: ${failedFile.error}`)
+        })
       }
+
+      // 3秒后清除进度显示
+      setTimeout(() => {
+        setUploadProgress({})
+      }, 3000)
     } catch (error) {
       toast.error('Error during upload process')
     } finally {
@@ -377,6 +477,41 @@ export default function FilesPage() {
             Drag files here to upload, or click this area to select files
           </p>
         </div>
+
+        {/* 上传进度显示 */}
+        {Object.keys(uploadProgress).length > 0 && (
+          <div className="mb-6 space-y-3 rounded-lg border bg-card p-4">
+            <h3 className="text-sm font-medium">Upload Progress</h3>
+            {Object.entries(uploadProgress).map(([fileName, progress]) => (
+              <div key={fileName} className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm truncate max-w-xs" title={fileName}>
+                    {fileName}
+                  </span>
+                  <div className="flex items-center gap-2">
+                    {progress.error ? (
+                      <span className="text-xs text-red-500">Failed</span>
+                    ) : progress.progress === 100 ? (
+                      <span className="text-xs text-green-500">Complete</span>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-muted-foreground">{progress.progress}%</span>
+                        <span className="text-xs text-blue-500">{progress.stage}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <Progress 
+                  value={progress.progress} 
+                  className="h-1"
+                />
+                {progress.error && (
+                  <p className="text-xs text-red-500 mt-1">{progress.error}</p>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* 数据表格 */}
         <DataTable

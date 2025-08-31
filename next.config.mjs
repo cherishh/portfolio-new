@@ -22,6 +22,10 @@ const nextConfig = {
       }
     ],
   },
+  experimental: {
+    // 增加文件上传大小限制到100MB
+    bodySizeLimit: '100mb',
+  },
 }
 
 const withMDX = nextMDX({
