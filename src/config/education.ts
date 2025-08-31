@@ -13,7 +13,7 @@ export const educationList: Array<EducationItemType> = [
     school: 'Wuhan University',
     major: 'Communication Engineering',
     logo: 'college',
-    start: '2010',
+    start: '2012',
     end: '2016',
   },
 ]
