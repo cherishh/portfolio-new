@@ -52,7 +52,7 @@ export const navItems: Array<NavItemType> = [
     href: '/blogs',
   },
   {
-    name: 'Clip',
-    href: '/clip',
+    name: 'Toolkit',
+    href: '/toolkit',
   },
 ]
