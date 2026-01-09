@@ -1,101 +1,96 @@
 'use client'
 
-import { Container } from '@/components/layout/Container'
-import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { Clipboard, Files, ExternalLink, Server } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { Clipboard, Files, QrCode, Lock, ArrowUpRight } from 'lucide-react'
+
+const tools = [
+  {
+    id: 'clip',
+    title: 'Clipboard',
+    description: 'Share text across devices',
+    icon: Clipboard,
+    href: '/clip',
+  },
+  {
+    id: 'files',
+    title: 'Files',
+    description: 'Cloud storage & management',
+    icon: Files,
+    href: '/files',
+    private: true,
+  },
+  {
+    id: 'mamma',
+    title: 'Mamma mia 🤌',
+    icon: QrCode,
+    href: '/fetch-server',
+    private: true,
+  },
+]
 
 export default function ToolkitPage() {
   const router = useRouter()
 
-  const tools = [
-    {
-      title: 'Web Clipboard',
-      description:
-        'Share text content across devices with cloud synchronization',
-      icon: Clipboard,
-      href: '/clip',
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-50 dark:bg-blue-900/20',
-    },
-    {
-      title: 'File Management',
-      description: 'Cloud file storage and management with drag & drop upload',
-      icon: Files,
-      href: '/files',
-      color: 'text-green-600',
-      bgColor: 'bg-green-50 dark:bg-green-900/20',
-      private: true,
-    },
-    {
-      title: 'Fetch Server',
-      description: 'Fetch and decode proxy server subscriptions with QR codes',
-      icon: Server,
-      href: '/fetch-server',
-      color: 'text-orange-600',
-      bgColor: 'bg-orange-50 dark:bg-orange-900/20',
-      private: true,
-    },
-  ]
-
-  const handleToolClick = (href: string) => {
-    router.push(href)
-  }
-
   return (
-    <Container className="mt-9">
-      <div className="mx-auto max-w-4xl">
-        {/* 页面头部 */}
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold">Toolkit</h1>
-          <p className="mt-2 text-muted-foreground">My little tools</p>
-        </div>
-
-        {/* 工具卡片网格 */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
-          {tools.map((tool) => {
-            const IconComponent = tool.icon
-            return (
-              <Card
-                key={tool.title}
-                className="group cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:shadow-lg"
-                onClick={() => handleToolClick(tool.href)}
-              >
-                <CardHeader>
-                  <div className="flex items-center gap-3">
-                    <div className={`rounded-lg p-2 ${tool.bgColor}`}>
-                      <IconComponent className={`h-6 w-6 ${tool.color}`} />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <CardTitle className="text-xl">{tool.title}</CardTitle>
-                        {tool.private && (
-                          <span className="rounded-full bg-orange-100 px-2 py-0.5 text-xs text-orange-800 dark:bg-orange-900/20 dark:text-orange-300">
-                            Private
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    <ExternalLink className="h-4 w-4 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-base">
-                    {tool.description}
-                  </CardDescription>
-                </CardContent>
-              </Card>
-            )
-          })}
-        </div>
+    <div className="mx-auto max-w-3xl px-4 py-16">
+      {/* Header */}
+      <div className="mb-10">
+        <h1 className="font-mono text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+          Toolkit
+        </h1>
+        <p className="mt-1 font-mono text-sm text-zinc-500">
+          {tools.length} tools
+        </p>
       </div>
-    </Container>
+
+      {/* Tools Grid */}
+      <div className="grid gap-3 sm:grid-cols-3">
+        {tools.map((tool) => {
+          const Icon = tool.icon
+          return (
+            <button
+              key={tool.id}
+              onClick={() => router.push(tool.href)}
+              className="group relative flex flex-col items-center gap-4 rounded-xl border border-zinc-200 bg-white p-6 text-center transition-all hover:border-zinc-300 hover:shadow-sm dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700"
+            >
+              {/* Private badge */}
+              {tool.private && (
+                <div className="absolute right-3 top-3">
+                  <Lock className="h-3.5 w-3.5 text-amber-500" />
+                </div>
+              )}
+
+              {/* Arrow on hover */}
+              <div className="absolute right-3 top-3 opacity-0 transition-opacity group-hover:opacity-100">
+                {!tool.private && <ArrowUpRight className="h-4 w-4 text-zinc-400" />}
+              </div>
+
+              {/* Icon */}
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg border border-zinc-200 bg-zinc-50 transition-colors group-hover:border-zinc-300 group-hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:group-hover:border-zinc-600 dark:group-hover:bg-zinc-700">
+                <Icon className="h-5 w-5 text-zinc-600 dark:text-zinc-300" />
+              </div>
+
+              {/* Text */}
+              <div className="space-y-1">
+                <h2 className="font-mono text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                  {tool.title}
+                </h2>
+                {'description' in tool && (
+                  <p className="font-mono text-xs text-zinc-500 dark:text-zinc-400">
+                    {tool.description}
+                  </p>
+                )}
+              </div>
+            </button>
+          )
+        })}
+      </div>
+
+      {/* Footer hint */}
+      <p className="mt-8 text-center font-mono text-xs text-zinc-400">
+        <Lock className="mr-1 inline-block h-3 w-3 text-amber-500" />
+        requires password
+      </p>
+    </div>
   )
 }
