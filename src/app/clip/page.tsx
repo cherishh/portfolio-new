@@ -363,9 +363,9 @@ export default function ClipPage() {
             </div>
           </div>
 
-          {/* 历史记录侧边栏 */}
+          {/* 历史记录侧边栏 - PC端 */}
           {showHistory && (
-            <div className="w-80 border-l border-border pl-6">
+            <div className="hidden lg:block w-80 border-l border-border pl-6">
               <div className="sticky top-6">
                 <div className="mb-4 flex items-center justify-between">
                   <h2 className="text-lg font-semibold">历史记录</h2>
@@ -415,12 +415,12 @@ export default function ClipPage() {
                             </button>
                           </div>
                         </div>
-                        
+
                         <div className="text-xs text-muted-foreground font-mono leading-relaxed break-words">
                           {item.preview}
                           {item.content.length > 100 && '...'}
                         </div>
-                        
+
                         <div className="mt-2 text-xs text-muted-foreground">
                           {item.content.length} 字符, {item.content.split('\n').length} 行
                         </div>
@@ -433,6 +433,97 @@ export default function ClipPage() {
           )}
         </div>
       </div>
+
+      {/* 历史记录底部弹框 - 移动端 */}
+      {showHistory && (
+        <div className="lg:hidden fixed inset-0 z-50">
+          {/* 遮罩层 */}
+          <div
+            className="absolute inset-0 bg-black/50 transition-opacity"
+            onClick={() => setShowHistory(false)}
+          />
+
+          {/* 底部弹框 */}
+          <div className="absolute bottom-0 left-0 right-0 h-[60vh] bg-background rounded-t-2xl shadow-xl animate-in slide-in-from-bottom duration-300">
+            {/* 拖拽指示条 */}
+            <div className="flex justify-center py-3">
+              <div className="w-10 h-1 bg-muted-foreground/30 rounded-full" />
+            </div>
+
+            {/* 头部 */}
+            <div className="px-4 pb-3 flex items-center justify-between border-b border-border">
+              <h2 className="text-lg font-semibold">历史记录</h2>
+              <div className="flex items-center gap-2">
+                <Button
+                  onClick={clearHistory}
+                  variant="ghost"
+                  size="sm"
+                  disabled={history.length === 0}
+                  className="text-red-500 hover:text-red-600"
+                >
+                  清空
+                </Button>
+                <button
+                  onClick={() => setShowHistory(false)}
+                  className="p-2 rounded-full hover:bg-muted transition-colors"
+                >
+                  <XIcon className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* 内容区域 */}
+            <div className="px-4 py-3 overflow-y-auto h-[calc(60vh-80px)]">
+              {isLoadingHistory ? (
+                <div className="flex items-center justify-center py-8">
+                  <div className="h-6 w-6 animate-spin rounded-full border-b-2 border-primary"></div>
+                </div>
+              ) : history.length === 0 ? (
+                <div className="text-center py-8 text-muted-foreground text-sm">
+                  暂无历史记录
+                  <br />
+                  保存内容后会在这里显示历史记录
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {history.map((item) => (
+                    <div
+                      key={item.id}
+                      className="rounded-lg border border-border bg-background/50 p-3 hover:bg-background/80 transition-colors cursor-pointer active:scale-[0.98]"
+                      onClick={() => {
+                        viewHistoryItem(item)
+                        setShowHistory(false)
+                      }}
+                    >
+                      <div className="flex items-start justify-between mb-2">
+                        <span className="text-xs text-muted-foreground">
+                          {formatRelativeTime(item.timestamp)}
+                        </span>
+                        <button
+                          onClick={(e) => deleteHistoryItem(item.id, item.timestamp, e)}
+                          className="p-1 rounded hover:bg-red-100 dark:hover:bg-red-900/20 text-red-500 hover:text-red-600 transition-colors"
+                          title="删除此历史记录"
+                        >
+                          <XIcon className="h-3 w-3" />
+                        </button>
+                      </div>
+
+                      <div className="text-xs text-muted-foreground font-mono leading-relaxed break-words">
+                        {item.preview}
+                        {item.content.length > 100 && '...'}
+                      </div>
+
+                      <div className="mt-2 text-xs text-muted-foreground">
+                        {item.content.length} 字符, {item.content.split('\n').length} 行
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </Container>
   )
 }

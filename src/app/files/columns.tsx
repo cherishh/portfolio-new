@@ -2,7 +2,7 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 import { Button } from '@/components/ui/button'
-import { MoreHorizontal, Download, Trash2, ExternalLink, FileIcon, ImageIcon, FileTextIcon, ArchiveIcon } from 'lucide-react'
+import { MoreHorizontal, FileIcon, ImageIcon, FileTextIcon, ArchiveIcon } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -98,19 +98,9 @@ export const createColumns = ({ onDownload, onDelete }: ColumnsProps): ColumnDef
     cell: ({ row }) => {
       const file = row.original
       return (
-        <div className="flex items-center gap-1">
-          <span className="text-sm text-muted-foreground truncate max-w-[250px]">
-            {file.key}
-          </span>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => window.open(file.url, '_blank')}
-            className="h-6 w-6 p-0"
-          >
-            <ExternalLink className="h-3 w-3" />
-          </Button>
-        </div>
+        <span className="text-sm text-muted-foreground truncate max-w-[250px]">
+          {file.key}
+        </span>
       )
     },
   },
@@ -166,23 +156,23 @@ export const createColumns = ({ onDownload, onDelete }: ColumnsProps): ColumnDef
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(file.url)}>
-              Copy URL
+            <DropdownMenuItem onClick={() => {
+              const publicUrl = `https://pub-ce42191b7e6f487fa1077cb938dc35a3.r2.dev/${file.key}`
+              navigator.clipboard.writeText(publicUrl)
+            }}>
+              Copy Public URL
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => window.open(file.url, '_blank')}>
-              <ExternalLink className="mr-2 h-4 w-4" />
-              Open in new tab
+            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(file.url)}>
+              Copy Presigned URL
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => onDownload(file)}>
-              <Download className="mr-2 h-4 w-4" />
               Download
             </DropdownMenuItem>
-            <DropdownMenuItem 
+            <DropdownMenuItem
               onClick={() => onDelete(file)}
               className="text-red-600"
             >
-              <Trash2 className="mr-2 h-4 w-4" />
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>

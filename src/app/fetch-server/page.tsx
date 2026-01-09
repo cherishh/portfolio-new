@@ -151,23 +151,24 @@ function ServerCard({ server }: { server: ServerInfo }) {
   }
 
   return (
-    <div className="group relative flex flex-col items-center gap-4 rounded-xl border border-zinc-200 bg-white p-5 transition-all hover:border-zinc-300 hover:shadow-sm dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700">
+    <div className="group relative flex flex-col items-center gap-3 sm:gap-4 rounded-xl border border-zinc-200 bg-white p-3 sm:p-5 transition-all hover:border-zinc-300 hover:shadow-sm dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700">
       {/* Type badge */}
-      <span className="absolute right-3 top-3 rounded-md bg-zinc-100 px-2 py-0.5 font-mono text-[10px] font-medium uppercase tracking-wider text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
+      <span className="absolute right-2 top-2 sm:right-3 sm:top-3 rounded-md bg-zinc-100 px-1.5 sm:px-2 py-0.5 font-mono text-[9px] sm:text-[10px] font-medium uppercase tracking-wider text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
         {server.type}
       </span>
 
       {/* QR Code */}
-      <div className="rounded-lg bg-white p-2">
-        <QRCodeSVG value={server.raw} size={120} level="M" />
+      <div className="rounded-lg bg-white p-1.5 sm:p-2">
+        <QRCodeSVG value={server.raw} size={90} level="M" className="sm:hidden" />
+        <QRCodeSVG value={server.raw} size={120} level="M" className="hidden sm:block" />
       </div>
 
       {/* Server Info */}
-      <div className="w-full space-y-1 text-center">
-        <h3 className="truncate font-medium text-zinc-900 dark:text-zinc-100">
+      <div className="w-full space-y-0.5 sm:space-y-1 text-center">
+        <h3 className="truncate text-sm sm:text-base font-medium text-zinc-900 dark:text-zinc-100">
           {server.name}
         </h3>
-        <p className="truncate font-mono text-xs text-zinc-500 dark:text-zinc-400">
+        <p className="truncate font-mono text-[10px] sm:text-xs text-zinc-500 dark:text-zinc-400">
           {server.address}:{server.port}
         </p>
       </div>
@@ -175,17 +176,17 @@ function ServerCard({ server }: { server: ServerInfo }) {
       {/* Copy button */}
       <button
         onClick={handleCopy}
-        className="flex w-full items-center justify-center gap-2 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 font-mono text-xs text-zinc-600 transition-all hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+        className="flex w-full items-center justify-center gap-1.5 sm:gap-2 rounded-lg border border-zinc-200 bg-zinc-50 px-2 sm:px-3 py-1.5 sm:py-2 font-mono text-[10px] sm:text-xs text-zinc-600 transition-all hover:bg-zinc-100 active:scale-95 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
       >
         {copied ? (
           <>
-            <Check className="h-3.5 w-3.5 text-emerald-500" />
+            <Check className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-emerald-500" />
             <span className="text-emerald-600 dark:text-emerald-400">Copied</span>
           </>
         ) : (
           <>
-            <Copy className="h-3.5 w-3.5" />
-            <span>Copy Link</span>
+            <Copy className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+            <span>Copy</span>
           </>
         )}
       </button>
@@ -280,11 +281,11 @@ export default function FetchServerPage() {
 
   // Main content
   return (
-    <div className="mx-auto max-w-5xl px-4 py-12">
+    <div className="mx-auto max-w-5xl px-4 py-8 sm:py-12">
       {/* Header */}
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-6 sm:mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="font-mono text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+          <h1 className="font-mono text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
             Servers
           </h1>
           {servers.length > 0 && (
@@ -294,7 +295,7 @@ export default function FetchServerPage() {
         <button
           onClick={fetchSubscription}
           disabled={isLoading}
-          className="flex items-center gap-2 rounded-lg bg-zinc-900 px-5 py-2.5 font-mono text-sm font-medium text-white transition-all hover:bg-zinc-800 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+          className="flex w-full sm:w-auto items-center justify-center gap-2 rounded-lg bg-zinc-900 px-5 py-2.5 font-mono text-sm font-medium text-white transition-all hover:bg-zinc-800 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
         >
           {isLoading ? (
             <>
@@ -309,7 +310,7 @@ export default function FetchServerPage() {
 
       {/* Server Grid */}
       {servers.length > 0 ? (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
           {servers.map((server) => (
             <ServerCard key={server.id} server={server} />
           ))}

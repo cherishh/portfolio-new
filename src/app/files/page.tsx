@@ -387,39 +387,33 @@ export default function FilesPage() {
   // 如果还未验证密码，显示密码输入界面
   if (!isAuthenticated) {
     return (
-      <Container className="mt-9">
-        <div className="mx-auto max-w-md">
-          <div className="rounded-lg border bg-card p-8 shadow-lg">
-            <div className="mb-6 text-center">
-              <h1 className="text-2xl font-bold">Access Required</h1>
-              <p className="mt-2 text-muted-foreground">
-                Please enter the password to access file management.
-              </p>
+      <div className="flex min-h-[60vh] items-center justify-center px-4">
+        <form onSubmit={handlePasswordSubmit} className="w-full max-w-xs space-y-4">
+          <div className="text-center">
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border-2 border-zinc-200 dark:border-zinc-700">
+              <svg className="h-5 w-5 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
             </div>
-
-            <form onSubmit={handlePasswordSubmit} className="space-y-4">
-              <div>
-                <Input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter password"
-                  required
-                  disabled={isLoading}
-                />
-              </div>
-
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={isLoading || !password.trim()}
-              >
-                {isLoading ? 'Verifying...' : 'Access'}
-              </Button>
-            </form>
+            <h1 className="font-mono text-lg font-medium text-zinc-900 dark:text-zinc-100">Protected</h1>
           </div>
-        </div>
-      </Container>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            autoFocus
+            className="w-full rounded-lg border border-zinc-200 bg-white px-4 py-3 font-mono text-sm text-zinc-900 placeholder-zinc-400 outline-none transition-colors focus:border-zinc-400 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder-zinc-500 dark:focus:border-zinc-500"
+          />
+          <button
+            type="submit"
+            disabled={isLoading || !password.trim()}
+            className="w-full rounded-lg bg-zinc-900 py-3 font-mono text-sm font-medium text-white transition-colors hover:bg-zinc-800 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+          >
+            {isLoading ? 'Verifying...' : 'Unlock'}
+          </button>
+        </form>
+      </div>
     )
   }
 
