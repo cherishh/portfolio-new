@@ -1,8 +1,11 @@
+import { Redis } from '@upstash/redis'
 import { NextRequest, NextResponse } from 'next/server'
 
-interface SubscriptionRequest {
-  url: string
-}
+const redis = Redis.fromEnv()
+
+const RATE_LIMIT_KEY = 'fetch-server:rate-limit'
+const MAX_REQUESTS = 10
+const WINDOW_SECONDS = 60
 
 interface SubscriptionResponse {
   success: boolean
@@ -12,7 +15,19 @@ interface SubscriptionResponse {
 
 export async function POST(request: NextRequest): Promise<NextResponse<SubscriptionResponse>> {
   try {
-    const body: SubscriptionRequest = await request.json()
+    // Rate limit check
+    const count = await redis.incr(RATE_LIMIT_KEY)
+    if (count === 1) {
+      await redis.expire(RATE_LIMIT_KEY, WINDOW_SECONDS)
+    }
+    if (count > MAX_REQUESTS) {
+      return NextResponse.json(
+        { success: false, error: 'Rate limit exceeded. Try again later.' },
+        { status: 429 }
+      )
+    }
+
+    const body = await request.json()
 
     if (!body.url) {
       return NextResponse.json(
@@ -21,7 +36,6 @@ export async function POST(request: NextRequest): Promise<NextResponse<Subscript
       )
     }
 
-    // Fetch the subscription content
     const response = await fetch(body.url, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (compatible; SubscriptionFetcher/1.0)',
