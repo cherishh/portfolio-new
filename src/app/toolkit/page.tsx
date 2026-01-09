@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Clipboard, Files, ExternalLink } from 'lucide-react'
+import { Clipboard, Files, ExternalLink, Server } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 export default function ToolkitPage() {
@@ -32,6 +32,15 @@ export default function ToolkitPage() {
       href: '/files',
       color: 'text-green-600',
       bgColor: 'bg-green-50 dark:bg-green-900/20',
+      private: true,
+    },
+    {
+      title: 'Fetch Server',
+      description: 'Fetch and decode proxy server subscriptions with QR codes',
+      icon: Server,
+      href: '/fetch-server',
+      color: 'text-orange-600',
+      bgColor: 'bg-orange-50 dark:bg-orange-900/20',
       private: true,
     },
   ]
