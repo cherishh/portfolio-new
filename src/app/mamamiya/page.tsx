@@ -75,15 +75,29 @@ function ServerCard({ server }: { server: ServerInfo }) {
 
 export default function MamamiyaPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true)
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [isVerifying, setIsVerifying] = useState(false)
   const [servers, setServers] = useState<ServerInfo[]>([])
 
+  // 检查是否已通过 cookie 验证
   useEffect(() => {
-    if (sessionStorage.getItem('mamamiya-auth') === 'true') {
-      setIsAuthenticated(true)
+    const checkAuth = async () => {
+      try {
+        const response = await fetch('/api/auth/check?scope=mamamiya')
+        const data = await response.json()
+        if (data.authenticated) {
+          setIsAuthenticated(true)
+        }
+      } catch {
+        // Ignore errors, user will need to authenticate
+      } finally {
+        setIsCheckingAuth(false)
+      }
     }
+    checkAuth()
   }, [])
 
   // Auto-fetch on authentication
@@ -93,8 +107,6 @@ export default function MamamiyaPage() {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated])
-
-  const [isVerifying, setIsVerifying] = useState(false)
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -111,7 +123,6 @@ export default function MamamiyaPage() {
 
       if (data.success) {
         setIsAuthenticated(true)
-        sessionStorage.setItem('mamamiya-auth', 'true')
       } else {
         toast.error('Invalid password')
         setPassword('')
@@ -146,6 +157,15 @@ export default function MamamiyaPage() {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  // Loading state while checking auth
+  if (isCheckingAuth) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <Loader2 className="h-6 w-6 animate-spin text-zinc-400" />
+      </div>
+    )
   }
 
   // Password gate

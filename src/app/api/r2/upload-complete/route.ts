@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getDownloadUrl } from '@/lib/r2'
+import { requireAuth } from '@/lib/auth'
 import type { UploadCompleteRequest, UploadCompleteResponse } from '@/types/files'
 
 export async function POST(request: NextRequest) {
+  const authError = await requireAuth('files')
+  if (authError) return authError
+
   try {
     const { fileName, fileSize, contentType }: UploadCompleteRequest = await request.json()
     

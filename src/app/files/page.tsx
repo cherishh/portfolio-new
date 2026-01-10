@@ -76,20 +76,27 @@ export default function FilesPage() {
     }
   }
 
-  // 检查是否已在 sessionStorage 中存储了验证状态
+  // 检查是否已通过 cookie 验证
   useEffect(() => {
-    const authStatus = sessionStorage.getItem('files-auth')
-    if (authStatus === 'true') {
-      setIsAuthenticated(true)
-    } else {
-      setIsLoading(false)
+    const checkAuth = async () => {
+      try {
+        const response = await fetch('/api/auth/check?scope=files')
+        const data = await response.json()
+        if (data.authenticated) {
+          setIsAuthenticated(true)
+        }
+      } catch {
+        // Ignore errors, user will need to authenticate
+      } finally {
+        setIsLoading(false)
+      }
     }
+    checkAuth()
   }, [])
 
-  // 保存验证状态到 sessionStorage 并获取文件列表
+  // 验证成功后获取文件列表
   useEffect(() => {
     if (isAuthenticated) {
-      sessionStorage.setItem('files-auth', 'true')
       fetchFiles()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

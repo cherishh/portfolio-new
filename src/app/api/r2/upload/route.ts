@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { uploadFile } from '@/lib/r2'
+import { requireAuth } from '@/lib/auth'
 import type { UploadResponse } from '@/types/files'
 
 export async function POST(request: NextRequest) {
+  const authError = await requireAuth('files')
+  if (authError) return authError
+
   try {
     const formData = await request.formData()
     const file = formData.get('file') as File

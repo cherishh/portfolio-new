@@ -1,6 +1,7 @@
 import { Redis } from '@upstash/redis'
 import { NextRequest, NextResponse } from 'next/server'
 import { randomUUID } from 'crypto'
+import { requireAuth } from '@/lib/auth'
 
 const redis = Redis.fromEnv()
 
@@ -145,6 +146,9 @@ function parseSubscription(content: string): ServerInfo[] {
 }
 
 export async function POST(_request: NextRequest): Promise<NextResponse<SubscriptionResponse>> {
+  const authError = await requireAuth('mamamiya')
+  if (authError) return authError as NextResponse<SubscriptionResponse>
+
   try {
     // Rate limit check
     const count = await redis.incr(RATE_LIMIT_KEY)

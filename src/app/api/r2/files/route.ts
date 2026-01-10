@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { listFiles } from '@/lib/r2'
+import { requireAuth } from '@/lib/auth'
 import type { ListFilesResponse } from '@/types/files'
 
 export async function GET(request: NextRequest) {
+  const authError = await requireAuth('files')
+  if (authError) return authError
+
   try {
     const searchParams = request.nextUrl.searchParams
     const prefix = searchParams.get('prefix') || undefined
