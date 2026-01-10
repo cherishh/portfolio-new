@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Container } from '@/components/layout/Container'
 import { Button } from '@/components/ui/button'
-import { ClipboardIcon, TrashIcon, HistoryIcon, EyeIcon, XIcon } from 'lucide-react'
+import { ClipboardIcon, HistoryIcon, EyeIcon, XIcon, Save } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface ClipboardData {
@@ -268,6 +268,12 @@ export default function ClipPage() {
             {/* 标题部分 */}
             <div className="mb-6">
               <h1 className="mb-2 text-3xl font-bold">网络剪切板</h1>
+              <p className="text-sm text-muted-foreground">
+                简单快速地跨设备传输一段文字，任何人都可以随意使用。
+              </p>
+              <p className="text-sm text-muted-foreground">
+              若内容被覆盖可以点击「显示历史」找回。
+              </p>
             </div>
 
             {/* 操作按钮 */}
@@ -282,21 +288,12 @@ export default function ClipPage() {
               </Button>
 
               <Button
-                onClick={clearContent}
-                variant="outline"
-                disabled={!content}
-                className="flex items-center gap-2"
-              >
-                <TrashIcon className="h-4 w-4" />
-                清空内容
-              </Button>
-
-              <Button
                 onClick={() => saveClipboard(content)}
                 disabled={isSaving}
                 variant={hasUnsavedChanges ? "default" : "outline"}
-                className={hasUnsavedChanges ? "bg-primary" : ""}
+                className={`flex items-center gap-2 ${hasUnsavedChanges ? "bg-primary" : ""}`}
               >
+                <Save className="h-4 w-4" />
                 {isSaving ? '保存中...' : hasUnsavedChanges ? '保存 *' : '保存'}
               </Button>
 

@@ -23,7 +23,7 @@ const tools = [
     id: 'mamma',
     title: 'Mamma mia 🤌',
     icon: QrCode,
-    href: '/fetch-server',
+    href: '/mamamiya',
     private: true,
   },
 ]
