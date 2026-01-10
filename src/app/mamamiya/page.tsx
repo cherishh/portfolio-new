@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 import { QRCodeSVG } from 'qrcode.react'
-import { Copy, Check, Loader2 } from 'lucide-react'
+import { Copy, Check, Loader2, Eye, EyeOff } from 'lucide-react'
 
 interface ServerInfo {
   id: string
@@ -76,6 +76,7 @@ function ServerCard({ server }: { server: ServerInfo }) {
 export default function MamamiyaPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [servers, setServers] = useState<ServerInfo[]>([])
 
@@ -93,14 +94,32 @@ export default function MamamiyaPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated])
 
-  const handlePasswordSubmit = (e: React.FormEvent) => {
+  const [isVerifying, setIsVerifying] = useState(false)
+
+  const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (password === 'zhimakaimen-ttt') {
-      setIsAuthenticated(true)
-      sessionStorage.setItem('mamamiya-auth', 'true')
-    } else {
-      toast.error('Invalid password')
-      setPassword('')
+    setIsVerifying(true)
+
+    try {
+      const response = await fetch('/api/auth/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password, scope: 'mamamiya' }),
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        setIsAuthenticated(true)
+        sessionStorage.setItem('mamamiya-auth', 'true')
+      } else {
+        toast.error('Invalid password')
+        setPassword('')
+      }
+    } catch {
+      toast.error('Verification failed')
+    } finally {
+      setIsVerifying(false)
     }
   }
 
@@ -142,19 +161,29 @@ export default function MamamiyaPage() {
             </div>
             <h1 className="font-mono text-lg font-medium text-zinc-900 dark:text-zinc-100">Protected</h1>
           </div>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            autoFocus
-            className="w-full rounded-lg border border-zinc-200 bg-white px-4 py-3 font-mono text-sm text-zinc-900 placeholder-zinc-400 outline-none transition-colors focus:border-zinc-400 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder-zinc-500 dark:focus:border-zinc-500"
-          />
+          <div className="relative">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              autoFocus
+              className="w-full rounded-lg border border-zinc-200 bg-white px-4 py-3 pr-10 font-mono text-sm text-zinc-900 placeholder-zinc-400 outline-none transition-colors focus:border-zinc-400 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder-zinc-500 dark:focus:border-zinc-500"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+            >
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
           <button
             type="submit"
-            className="w-full rounded-lg bg-zinc-900 py-3 font-mono text-sm font-medium text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+            disabled={isVerifying || !password.trim()}
+            className="w-full rounded-lg bg-zinc-900 py-3 font-mono text-sm font-medium text-white transition-colors hover:bg-zinc-800 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
           >
-            Unlock
+            {isVerifying ? 'Verifying...' : 'Unlock'}
           </button>
         </form>
       </div>

@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Container } from '@/components/layout/Container'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Upload, Plus, RefreshCw, X } from 'lucide-react'
+import { Upload, Plus, RefreshCw, X, Eye, EyeOff } from 'lucide-react'
 import { toast } from 'sonner'
 import { Progress } from '@/components/ui/progress'
 import { DataTable } from './data-table'
@@ -24,6 +24,7 @@ export default function FilesPage() {
   const [isUploading, setIsUploading] = useState(false)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [uploadProgress, setUploadProgress] = useState<{
     [key: string]: { progress: number; stage: string; error?: string }
   }>({})
@@ -49,13 +50,29 @@ export default function FilesPage() {
   }, [])
 
   // 验证密码
-  const handlePasswordSubmit = (e: React.FormEvent) => {
+  const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (password === 'tuatara') {
-      setIsAuthenticated(true)
-    } else {
-      toast.error('Invalid password')
-      setPassword('')
+    setIsLoading(true)
+
+    try {
+      const response = await fetch('/api/auth/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password, scope: 'files' }),
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        setIsAuthenticated(true)
+      } else {
+        toast.error('Invalid password')
+        setPassword('')
+      }
+    } catch {
+      toast.error('Verification failed')
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -397,14 +414,23 @@ export default function FilesPage() {
             </div>
             <h1 className="font-mono text-lg font-medium text-zinc-900 dark:text-zinc-100">Protected</h1>
           </div>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            autoFocus
-            className="w-full rounded-lg border border-zinc-200 bg-white px-4 py-3 font-mono text-sm text-zinc-900 placeholder-zinc-400 outline-none transition-colors focus:border-zinc-400 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder-zinc-500 dark:focus:border-zinc-500"
-          />
+          <div className="relative">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              autoFocus
+              className="w-full rounded-lg border border-zinc-200 bg-white px-4 py-3 pr-10 font-mono text-sm text-zinc-900 placeholder-zinc-400 outline-none transition-colors focus:border-zinc-400 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder-zinc-500 dark:focus:border-zinc-500"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+            >
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
           <button
             type="submit"
             disabled={isLoading || !password.trim()}
