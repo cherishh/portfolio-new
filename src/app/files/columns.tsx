@@ -15,7 +15,7 @@ import {
   PresentationIcon,
   FileTypeIcon,
   PackageIcon,
-  Database
+  Database,
 } from 'lucide-react'
 import {
   DropdownMenu,
@@ -39,7 +39,7 @@ function formatFileSize(bytes: number): string {
 function formatDate(date: Date): string {
   return new Intl.RelativeTimeFormat('en', { numeric: 'auto' }).format(
     Math.floor((date.getTime() - Date.now()) / (1000 * 60 * 60 * 24)),
-    'day'
+    'day',
   )
 }
 
@@ -49,7 +49,21 @@ function getFileIcon(fileName: string) {
   if (!ext) return <FileIcon className="h-4 w-4" />
 
   // 图片
-  if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'ico', 'bmp', 'tiff', 'avif', 'heic'].includes(ext)) {
+  if (
+    [
+      'jpg',
+      'jpeg',
+      'png',
+      'gif',
+      'webp',
+      'svg',
+      'ico',
+      'bmp',
+      'tiff',
+      'avif',
+      'heic',
+    ].includes(ext)
+  ) {
     return <ImageIcon className="h-4 w-4 text-green-500" />
   }
 
@@ -59,12 +73,37 @@ function getFileIcon(fileName: string) {
   }
 
   // 音频
-  if (['mp3', 'wav', 'flac', 'aac', 'ogg', 'm4a', 'wma', 'opus'].includes(ext)) {
+  if (
+    ['mp3', 'wav', 'flac', 'aac', 'ogg', 'm4a', 'wma', 'opus'].includes(ext)
+  ) {
     return <MusicIcon className="h-4 w-4 text-pink-500" />
   }
 
   // 代码
-  if (['js', 'ts', 'jsx', 'tsx', 'py', 'java', 'go', 'rs', 'c', 'cpp', 'h', 'hpp', 'cs', 'rb', 'php', 'swift', 'kt', 'scala', 'vue', 'svelte'].includes(ext)) {
+  if (
+    [
+      'js',
+      'ts',
+      'jsx',
+      'tsx',
+      'py',
+      'java',
+      'go',
+      'rs',
+      'c',
+      'cpp',
+      'h',
+      'hpp',
+      'cs',
+      'rb',
+      'php',
+      'swift',
+      'kt',
+      'scala',
+      'vue',
+      'svelte',
+    ].includes(ext)
+  ) {
     return <FileCodeIcon className="h-4 w-4 text-yellow-500" />
   }
 
@@ -74,7 +113,21 @@ function getFileIcon(fileName: string) {
   }
 
   // 文本/数据
-  if (['txt', 'md', 'csv', 'json', 'xml', 'yaml', 'yml', 'toml', 'ini', 'conf', 'log'].includes(ext)) {
+  if (
+    [
+      'txt',
+      'md',
+      'csv',
+      'json',
+      'xml',
+      'yaml',
+      'yml',
+      'toml',
+      'ini',
+      'conf',
+      'log',
+    ].includes(ext)
+  ) {
     return <FileTextIcon className="h-4 w-4 text-blue-500" />
   }
 
@@ -119,9 +172,17 @@ function getFileIcon(fileName: string) {
 interface ColumnsProps {
   onDownload: (file: FileItem) => void
   onDelete: (file: FileItem) => void
+  onCopyShareLink: (
+    file: FileItem,
+    duration: '24h' | '7d' | '30d' | '1y',
+  ) => void
 }
 
-export const createColumns = ({ onDownload, onDelete }: ColumnsProps): ColumnDef<FileItem>[] => [
+export const createColumns = ({
+  onDownload,
+  onDelete,
+  onCopyShareLink,
+}: ColumnsProps): ColumnDef<FileItem>[] => [
   {
     id: 'select',
     header: ({ table }) => (
@@ -152,7 +213,10 @@ export const createColumns = ({ onDownload, onDelete }: ColumnsProps): ColumnDef
       return (
         <div className="flex items-center gap-2">
           {getFileIcon(file.name)}
-          <span className="font-medium truncate max-w-[200px]" title={file.name}>
+          <span
+            className="max-w-[200px] truncate font-medium"
+            title={file.name}
+          >
             {file.name}
           </span>
         </div>
@@ -165,7 +229,7 @@ export const createColumns = ({ onDownload, onDelete }: ColumnsProps): ColumnDef
     cell: ({ row }) => {
       const file = row.original
       return (
-        <span className="text-sm text-muted-foreground truncate max-w-[250px]">
+        <span className="max-w-[250px] truncate text-sm text-muted-foreground">
           {file.key}
         </span>
       )
@@ -223,14 +287,25 @@ export const createColumns = ({ onDownload, onDelete }: ColumnsProps): ColumnDef
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => {
-              const publicUrl = `https://pub-ce42191b7e6f487fa1077cb938dc35a3.r2.dev/${file.key}`
-              navigator.clipboard.writeText(publicUrl)
-            }}>
+            <DropdownMenuItem
+              onClick={() => {
+                const publicUrl = `https://pub-ce42191b7e6f487fa1077cb938dc35a3.r2.dev/${file.key}`
+                navigator.clipboard.writeText(publicUrl)
+              }}
+            >
               Copy Public URL
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(file.url)}>
-              Copy Presigned URL
+            <DropdownMenuItem onClick={() => onCopyShareLink(file, '24h')}>
+              Copy Share Link (24h)
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => onCopyShareLink(file, '7d')}>
+              Copy Share Link (7d)
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => onCopyShareLink(file, '30d')}>
+              Copy Share Link (30d)
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => onCopyShareLink(file, '1y')}>
+              Copy Share Link (1y)
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => onDownload(file)}>

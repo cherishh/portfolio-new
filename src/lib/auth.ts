@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server'
 
 const AUTH_SECRET = process.env.AUTH_SECRET || 'fallback-secret-change-me'
 const COOKIE_NAME = 'auth-token'
-const TOKEN_EXPIRY = 6 * 60 * 60 * 1000 // 6 hours
+const TOKEN_EXPIRY = 24 * 60 * 60 * 1000
 
 export type AuthScope = 'files' | 'mamamiya'
 
@@ -112,13 +112,15 @@ export async function isAuthenticated(scope: AuthScope): Promise<boolean> {
 }
 
 // Middleware helper: return 401 if not authenticated
-export async function requireAuth(scope: AuthScope): Promise<NextResponse | null> {
+export async function requireAuth(
+  scope: AuthScope,
+): Promise<NextResponse | null> {
   const authenticated = await isAuthenticated(scope)
 
   if (!authenticated) {
     return NextResponse.json(
       { success: false, error: 'Unauthorized' },
-      { status: 401 }
+      { status: 401 },
     )
   }
 

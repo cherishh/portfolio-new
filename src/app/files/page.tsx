@@ -102,38 +102,29 @@ export default function FilesPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated])
 
-  // 刷新文件 URLs
-  const refreshUrls = async () => {
-    if (files.length === 0) return
-
+  const handleCopyShareLink = async (
+    file: FileItem,
+    duration: '24h' | '7d' | '30d' | '1y',
+  ) => {
     try {
-      const keys = files.map((file) => file.key)
-      const response = await fetch('/api/r2/refresh-urls', {
+      const response = await fetch('/api/r2/share-link', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ keys }),
+        body: JSON.stringify({ key: file.key, duration }),
       })
 
       const data = await response.json()
 
-      if (data.success) {
-        // 更新文件列表中的 URLs
-        const urlMap = new Map(
-          data.urls.map((item: any) => [item.key, item.url]),
-        )
-        setFiles((prevFiles: FileItem[]) =>
-          prevFiles.map((file) => ({
-            ...file,
-            url: (urlMap.get(file.key) as string) ?? file.url,
-          })),
-        )
-        toast.success('Download links refreshed')
+      if (data.shareLink) {
+        const fullUrl = `${window.location.origin}${data.shareLink}`
+        await navigator.clipboard.writeText(fullUrl)
+        toast.success(`Share link (${duration}) copied to clipboard`)
       } else {
-        toast.error(data.error || 'Failed to refresh links')
+        toast.error(data.error || 'Failed to generate share link')
       }
     } catch (error) {
-      toast.error('Failed to refresh links')
-      console.error('Error refreshing URLs:', error)
+      toast.error('Failed to generate share link')
+      console.error('Error generating share link:', error)
     }
   }
 
@@ -406,20 +397,36 @@ export default function FilesPage() {
   const columns = createColumns({
     onDownload: handleDownload,
     onDelete: handleDelete,
+    onCopyShareLink: handleCopyShareLink,
   })
 
   // 如果还未验证密码，显示密码输入界面
   if (!isAuthenticated) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center px-4">
-        <form onSubmit={handlePasswordSubmit} className="w-full max-w-xs space-y-4">
+        <form
+          onSubmit={handlePasswordSubmit}
+          className="w-full max-w-xs space-y-4"
+        >
           <div className="text-center">
             <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border-2 border-zinc-200 dark:border-zinc-700">
-              <svg className="h-5 w-5 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              <svg
+                className="h-5 w-5 text-zinc-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                />
               </svg>
             </div>
-            <h1 className="font-mono text-lg font-medium text-zinc-900 dark:text-zinc-100">Protected</h1>
+            <h1 className="font-mono text-lg font-medium text-zinc-900 dark:text-zinc-100">
+              Protected
+            </h1>
           </div>
           <div className="relative">
             <input
@@ -435,7 +442,11 @@ export default function FilesPage() {
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
             >
-              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              {showPassword ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
             </button>
           </div>
           <button
@@ -460,9 +471,8 @@ export default function FilesPage() {
             My files in the Cloudflare R2 storage bucket.
           </p>
           <p className="mt-2 text-muted-foreground">
-            Download links have 24-hour expiry, click &quot;Refresh Links&quot;
-            button to regenerate after expiry. Now supports large file uploads
-            via direct R2 connection.
+            Use Share Links (24h or 1y) to share files with others. Supports
+            large file uploads via direct R2 connection.
           </p>
         </div>
 
@@ -479,16 +489,6 @@ export default function FilesPage() {
                 className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`}
               />
               Refresh List
-            </Button>
-
-            <Button
-              variant="outline"
-              onClick={refreshUrls}
-              disabled={files.length === 0}
-              className="flex items-center gap-2"
-            >
-              <RefreshCw className="h-4 w-4" />
-              Refresh Links
             </Button>
           </div>
 
