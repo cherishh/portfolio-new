@@ -2,7 +2,21 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 import { Button } from '@/components/ui/button'
-import { MoreHorizontal, FileIcon, ImageIcon, FileTextIcon, ArchiveIcon } from 'lucide-react'
+import {
+  MoreHorizontal,
+  FileIcon,
+  ImageIcon,
+  FileTextIcon,
+  ArchiveIcon,
+  VideoIcon,
+  MusicIcon,
+  FileCodeIcon,
+  FileSpreadsheetIcon,
+  PresentationIcon,
+  FileTypeIcon,
+  PackageIcon,
+  Database
+} from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,21 +45,74 @@ function formatDate(date: Date): string {
 
 function getFileIcon(fileName: string) {
   const ext = fileName.split('.').pop()?.toLowerCase()
-  
+
   if (!ext) return <FileIcon className="h-4 w-4" />
-  
-  if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(ext)) {
+
+  // 图片
+  if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'ico', 'bmp', 'tiff', 'avif', 'heic'].includes(ext)) {
     return <ImageIcon className="h-4 w-4 text-green-500" />
   }
-  
-  if (['txt', 'md', 'csv', 'json', 'xml'].includes(ext)) {
+
+  // 视频
+  if (['mp4', 'mov', 'avi', 'mkv', 'webm', 'flv', 'wmv', 'm4v'].includes(ext)) {
+    return <VideoIcon className="h-4 w-4 text-red-500" />
+  }
+
+  // 音频
+  if (['mp3', 'wav', 'flac', 'aac', 'ogg', 'm4a', 'wma', 'opus'].includes(ext)) {
+    return <MusicIcon className="h-4 w-4 text-pink-500" />
+  }
+
+  // 代码
+  if (['js', 'ts', 'jsx', 'tsx', 'py', 'java', 'go', 'rs', 'c', 'cpp', 'h', 'hpp', 'cs', 'rb', 'php', 'swift', 'kt', 'scala', 'vue', 'svelte'].includes(ext)) {
+    return <FileCodeIcon className="h-4 w-4 text-yellow-500" />
+  }
+
+  // Web
+  if (['html', 'css', 'scss', 'sass', 'less'].includes(ext)) {
+    return <FileCodeIcon className="h-4 w-4 text-orange-500" />
+  }
+
+  // 文本/数据
+  if (['txt', 'md', 'csv', 'json', 'xml', 'yaml', 'yml', 'toml', 'ini', 'conf', 'log'].includes(ext)) {
     return <FileTextIcon className="h-4 w-4 text-blue-500" />
   }
-  
-  if (['zip', 'rar', '7z', 'tar', 'gz'].includes(ext)) {
+
+  // 电子表格
+  if (['xls', 'xlsx', 'numbers'].includes(ext)) {
+    return <FileSpreadsheetIcon className="h-4 w-4 text-emerald-500" />
+  }
+
+  // 演示文稿
+  if (['ppt', 'pptx', 'key'].includes(ext)) {
+    return <PresentationIcon className="h-4 w-4 text-amber-500" />
+  }
+
+  // PDF/文档
+  if (['pdf', 'doc', 'docx', 'rtf', 'odt', 'pages'].includes(ext)) {
+    return <FileTypeIcon className="h-4 w-4 text-red-600" />
+  }
+
+  // 字体
+  if (['ttf', 'otf', 'woff', 'woff2', 'eot'].includes(ext)) {
+    return <FileTypeIcon className="h-4 w-4 text-indigo-500" />
+  }
+
+  // 压缩包
+  if (['zip', 'rar', '7z', 'tar', 'gz', 'bz2', 'xz', 'tgz'].includes(ext)) {
     return <ArchiveIcon className="h-4 w-4 text-purple-500" />
   }
-  
+
+  // 安装包
+  if (['exe', 'dmg', 'app', 'apk', 'deb', 'rpm', 'msi', 'pkg'].includes(ext)) {
+    return <PackageIcon className="h-4 w-4 text-slate-500" />
+  }
+
+  // 数据库
+  if (['sql', 'db', 'sqlite', 'sqlite3'].includes(ext)) {
+    return <Database className="h-4 w-4 text-cyan-500" />
+  }
+
   return <FileIcon className="h-4 w-4" />
 }
 

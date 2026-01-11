@@ -53,7 +53,9 @@ export function DataTable<TData, TValue>({
   onDeleteSelected,
   isLoading = false,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [sorting, setSorting] = React.useState<SortingState>([
+    { id: 'lastModified', desc: true }
+  ])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   )
