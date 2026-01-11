@@ -25,6 +25,19 @@ export type ProjectItemType = {
 // projects
 export const projects: Array<ProjectItemType> = [
   {
+    name: 'YFSP Ad Blocker',
+    description:
+      'Chrome extension that auto-skips video ads on yfsp.tv streaming site.',
+    link: {
+      href: 'https://github.com/cherishh/yfsp-blocker',
+      label: 'YFSP Ad Blocker',
+    },
+    logo: 'https://pub-ce42191b7e6f487fa1077cb938dc35a3.r2.dev/yf_logo.webp',
+    category: ['Chrome Extension'],
+    techStack: ['WXT', 'React', 'TypeScript', 'Manifest V3'],
+    tags: ['Chrome Extension', 'Ad Blocker'],
+  },
+  {
     name: 'Sketch2Art',
     description: 'Transform drawings into Images, using the magic of AI.',
     link: {
